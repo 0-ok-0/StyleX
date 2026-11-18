@@ -1,0 +1,26 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<style>@font-face{font-family:"Nimbus Sans Narrow";font-weight:400;font-style:normal;font-display:block;src:url(fonts/nimbus-sans-narrow-400.woff2) format("woff2")}@font-face{font-family:"Nimbus Sans Narrow";font-weight:700;font-style:normal;font-display:block;src:url(fonts/nimbus-sans-narrow-700.woff2) format("woff2")}@font-face{font-family:"Noto Sans Mono";font-weight:100 500;font-style:normal;font-display:block;src:url(fonts/noto-sans-mono-100-500.woff2) format("woff2")}@font-face{font-family:"Noto Sans Mono";font-weight:600 900;font-style:normal;font-display:block;src:url(fonts/noto-sans-mono-600-900.woff2) format("woff2")}@font-face{font-family:"Noto Sans CJK JP";font-weight:100 500;font-style:normal;font-display:block;src:url(fonts/noto-sans-cjk-jp-100-500.woff2) format("woff2")}@font-face{font-family:"Noto Sans CJK JP";font-weight:600 900;font-style:normal;font-display:block;src:url(fonts/noto-sans-cjk-jp-600-900.woff2) format("woff2")}
+html,body{margin:0;height:100%;background:#000;overflow:hidden;color:#fff;-webkit-user-select:none;user-select:none}
+.aod{position:absolute;left:0;right:0;top:27%;display:flex;flex-direction:column;align-items:center;transition:transform 2.4s ease}
+.hr{width:74px;height:34px;animation:br 4s ease-in-out infinite}
+.clk{display:flex;flex-direction:column;align-items:center;margin-top:12px}
+.clk b{font:700 124px/.88 "Nimbus Sans Narrow",sans-serif;color:rgba(255,43,58,.06);-webkit-text-stroke:1.5px #ff4652;filter:drop-shadow(0 0 7px rgba(255,43,58,.8));animation:br 4s ease-in-out infinite}
+.dt{margin-top:20px;font:700 11px "Noto Sans Mono",monospace;letter-spacing:.2em;color:rgba(255,255,255,.66);text-transform:uppercase}
+.nt{display:flex;gap:12px;margin-top:18px;min-height:26px}
+.nt img{width:24px;height:24px;filter:drop-shadow(0 0 3px rgba(255,43,58,.9))}
+.ft{position:absolute;left:0;right:0;bottom:7%;text-align:center;font:400 10px "Noto Sans Mono",monospace;letter-spacing:.24em;color:rgba(255,255,255,.3)}
+.ft b{font-family:"Noto Sans CJK JP",sans-serif;font-weight:400;color:rgba(255,90,100,.6)}
+@keyframes br{0%,100%{opacity:.72}50%{opacity:1}}
+</style></head><body>
+<div class="aod" id="a"><svg class="hr" viewBox="0 0 64 30" fill="rgba(255,43,58,.18)" stroke="#ff2b3a" stroke-width="1.6" stroke-linejoin="round"><path d="M23 28C21 17 15.5 8.5 5.5 2.5c3.6 9 6.6 17 8.6 25.5Z"/><path d="M41 28c2-11 7.5-19.5 17.5-25.5-3.6 9-6.6 17-8.6 25.5Z"/></svg>
+<div class="clk"><b id="h">00</b><b id="m">00</b></div><div class="dt" id="d"></div><div class="nt" id="n"></div></div>
+<div class="ft">STRELIZIA · <b>比翼の鳥</b></div>
+<script>(()=>{const A=window.Android,WDS=['вс','пн','вт','ср','чт','пт','сб'],MON=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const $=i=>document.getElementById(i);let bat='';
+function t(){const d=new Date();$('h').textContent=String(d.getHours()).padStart(2,'0');$('m').textContent=String(d.getMinutes()).padStart(2,'0');
+try{if(A){const b=JSON.parse(A.bat());bat=' · '+b.bat+'%'+(b.chg?' · заряжается':'');}}catch(e){}
+$('d').textContent=(WDS[d.getDay()]+' · '+d.getDate()+' '+MON[d.getMonth()]).toUpperCase()+bat;
+try{if(A){const ids=JSON.parse(A.notifs());$('n').innerHTML=ids.map(i=>'<img src="https://appassets.androidplatform.net/icons/'+encodeURIComponent(i)+'.png" alt="">').join('');}}catch(e){}}
+function drift(){$('a').style.transform='translate('+(Math.random()*20-10).toFixed(0)+'px,'+(Math.random()*28-14).toFixed(0)+'px)';}
+t();setInterval(t,10000);setInterval(drift,60000);})();</script></body></html>

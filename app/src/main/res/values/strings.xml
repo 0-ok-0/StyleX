@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StyleX</string>
+    <string name="notif_label">StyleX: уведомления</string>
+    <string name="acc_label">StyleX: блокировка</string>
+    <string name="acc_desc">Блокирует экран двойным тапом, открывает системную шторку и рисует островок у камеры поверх приложений. Содержимое экрана и ввод не читает.</string>
+    <string name="dream_label">StyleX AOD</string>
+</resources>

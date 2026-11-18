@@ -1,0 +1,971 @@
+@font-face{font-family:"Nimbus Sans Narrow";font-weight:400;font-style:normal;font-display:block;src:url(fonts/nimbus-sans-narrow-400.woff2) format("woff2")}@font-face{font-family:"Nimbus Sans Narrow";font-weight:700;font-style:normal;font-display:block;src:url(fonts/nimbus-sans-narrow-700.woff2) format("woff2")}@font-face{font-family:"Noto Sans";font-weight:100 500;font-style:normal;font-display:block;src:url(fonts/noto-sans-100-500.woff2) format("woff2")}@font-face{font-family:"Noto Sans";font-weight:600 900;font-style:normal;font-display:block;src:url(fonts/noto-sans-600-900.woff2) format("woff2")}@font-face{font-family:"Noto Sans Mono";font-weight:100 500;font-style:normal;font-display:block;src:url(fonts/noto-sans-mono-100-500.woff2) format("woff2")}@font-face{font-family:"Noto Sans Mono";font-weight:600 900;font-style:normal;font-display:block;src:url(fonts/noto-sans-mono-600-900.woff2) format("woff2")}@font-face{font-family:"Noto Sans CJK JP";font-weight:100 500;font-style:normal;font-display:block;src:url(fonts/noto-sans-cjk-jp-100-500.woff2) format("woff2")}@font-face{font-family:"Noto Sans CJK JP";font-weight:600 900;font-style:normal;font-display:block;src:url(fonts/noto-sans-cjk-jp-600-900.woff2) format("woff2")}@font-face{font-family:"Noto Serif CJK JP";font-weight:100 900;font-style:normal;font-display:block;src:url(fonts/noto-serif-cjk-jp-100-900.woff2) format("woff2")}@font-face{font-family:"LXSym";font-weight:100 900;font-style:normal;font-display:block;src:url(fonts/lxsym-100-900.woff2) format("woff2")}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+.scr{position:relative;width:360px;height:800px;overflow:hidden;color:#fff;font-family:"Noto Sans",sans-serif;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+.wp{position:absolute;left:0;top:0;width:360px;height:800px;display:block}
+.sb{position:absolute;z-index:40;left:0;right:0;top:0;height:30px;padding:0 16px 0 24px;display:flex;align-items:center;justify-content:space-between;font:600 12.5px/1 "Noto Sans",sans-serif;color:var(--sb,#fff);letter-spacing:.01em}
+.sb .r{display:flex;align-items:center;gap:8px}.sb svg{display:block}
+.gest{position:absolute;z-index:40;left:50%;bottom:7px;width:112px;height:4px;margin-left:-56px;border-radius:3px;background:var(--gest,rgba(255,255,255,.82))}
+.ico{width:100%;height:100%;display:block;overflow:visible}
+.rail{position:absolute;z-index:20;display:flex;flex-direction:column;align-items:center}
+.rail .app,.rail .add,.rail .all{position:relative;display:grid;place-items:center;flex:none}
+.jp{font-family:"Noto Sans CJK JP",sans-serif}.jps{font-family:"Noto Serif CJK JP",serif}
+
+
+.t09{--N:#ff2b3a}
+.t09 .clk{position:absolute;left:14px;top:40px;width:150px;height:70px;overflow:visible;filter:drop-shadow(0 0 4px rgba(255,43,58,.9)) drop-shadow(0 0 14px rgba(255,20,40,.55))}
+.t09 .clk text{font:700 64px/1 "Nimbus Sans Narrow",sans-serif;fill:rgba(255,43,58,.12);stroke:#ff4652;stroke-width:1.5;letter-spacing:1px}
+.t09 .hud{position:absolute;left:16px;top:116px;font:700 9px/1.6 "Noto Sans Mono",monospace;letter-spacing:.14em;color:var(--N);text-shadow:0 0 6px rgba(255,43,58,.8)}
+.t09 .hud span{color:rgba(255,255,255,.72);text-shadow:none;font-weight:400}
+.t09 .br{position:absolute;left:8px;top:36px;width:150px;height:110px}
+.t09 .sync{position:absolute;left:16px;bottom:26px;display:flex;align-items:center;gap:12px;font:700 8.5px/1.4 "Noto Sans Mono",monospace;letter-spacing:.12em;color:rgba(255,255,255,.75)}
+.t09 .sync b{color:var(--N);text-shadow:0 0 6px rgba(255,43,58,.8)}
+.t09 .rail{right:10px;bottom:24px;width:48px;gap:12px;padding:12px 0;background:rgba(10,11,18,.6);clip-path:polygon(0 12px,12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%)}
+.t09 .rail::before{content:"";position:absolute;inset:0;border:1px solid rgba(255,43,58,.55);clip-path:inherit}
+.t09 .app{width:36px;height:36px;background:#11131d;box-shadow:inset 0 0 0 1px var(--N),0 0 10px rgba(255,43,58,.5)}
+.t09 .add{width:22px;height:22px}
+.t09 .sep{width:16px;height:1px;background:rgba(255,43,58,.7)}
+.t09 .all{width:36px;height:36px}
+.t09 .app .mi{width:19px;height:19px;color:#ff5a64;stroke-width:1.5;filter:drop-shadow(0 0 3px rgba(255,43,58,.95))}
+
+
+.scr{-webkit-touch-callout:none;--ease:cubic-bezier(.2,.8,.2,1);--spring:cubic-bezier(.34,1.56,.64,1);user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:where(.scr) button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.scr .wp{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .5s var(--ease),filter .5s}
+.home{position:absolute;inset:0;z-index:5;transition:opacity .32s,transform .45s var(--ease),filter .45s}
+.scr.o-drw .home{opacity:0;transform:scale(.94);pointer-events:none}
+.scr.o-drw .wp{transform:scale(1.06)}
+.scr.o-app .home{transform:scale(.92);opacity:0}
+.rail .app,.rail .add,.rail .all{cursor:pointer;transition:transform .18s var(--ease)}
+.rail .app:active,.rail .add:active,.rail .all:active{transform:scale(.88)}
+.rail .apps{display:contents}
+.rail .app .x{display:none}
+/* entrance */
+.scr.enter .home .rail .app,.scr.enter .home .rail .add,.scr.enter .home .rail .all{animation:railIn .55s var(--spring) both;animation-delay:calc(var(--i,0)*45ms + 120ms)}
+@keyframes railIn{from{opacity:0;transform:translateX(var(--rx,24px)) scale(.6)}}
+.scr.enter .home [data-in]{animation:fadeUp .7s var(--ease) both;animation-delay:calc(var(--d,0)*1ms)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}}
+.scr .wp{animation:none}.scr.enter .wp{animation:wpIn .9s var(--ease) both}@keyframes wpIn{from{opacity:0;transform:scale(1.06)}}
+/* drawer */
+.drw{position:absolute;inset:0;z-index:20;visibility:hidden;pointer-events:none;color:var(--fg)}
+.scr.o-drw .drw{visibility:visible;pointer-events:auto}
+.drw-bg,.drw-deco{position:absolute;inset:0;opacity:0;transition:opacity .35s}
+.drw-deco{pointer-events:none}
+.scr.o-drw .drw-bg,.scr.o-drw .drw-deco{opacity:1}
+.drw-in{position:absolute;inset:0;display:flex;flex-direction:column;padding-top:32px}
+.drw-hd{position:relative;padding:12px 20px 8px;opacity:0;transform:translateY(-10px);transition:opacity .3s,transform .4s var(--ease)}
+.scr.o-drw .drw-hd{opacity:1;transform:none;transition-delay:.05s}
+.drw-tt{display:flex;align-items:baseline;gap:12px;min-height:30px}.drw-tt .cnt{white-space:nowrap}
+.drw-tt .gear{margin-left:auto;align-self:center;width:34px;height:34px;display:grid;place-items:center;color:var(--fg2)}
+.drw-tt .gear .mi{width:20px;height:20px;stroke-width:1.5}
+.srch{position:relative;display:flex;align-items:center;gap:8px;height:40px;margin-top:16px;padding:0 12px;cursor:text}
+.srch>.mi{width:17px;height:17px;flex:none;stroke-width:1.8;opacity:.8}
+.srch input{flex:1;min-width:0;height:100%;border:0;outline:0;background:none;font:inherit;color:inherit;letter-spacing:inherit;text-transform:none}
+.srch input::placeholder{color:inherit;opacity:.5}
+.srch .clr{display:none;width:24px;height:24px;place-items:center;opacity:.7}
+.srch.has .clr{display:grid}
+.chips{display:flex;gap:8px;margin:12px -18px 0;padding:2px 20px 4px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar,.drw-ls::-webkit-scrollbar,.sht-sc::-webkit-scrollbar,.sw::-webkit-scrollbar{display:none}
+.chip{flex:none;white-space:nowrap;transition:background .2s,color .2s,box-shadow .2s}
+.drw-ls{position:relative;flex:1;overflow-y:auto;overscroll-behavior:contain;padding:8px 32px 80px 12px;scrollbar-width:none;-webkit-mask-image:linear-gradient(transparent,#000 14px,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(transparent,#000 14px,#000 calc(100% - 40px),transparent)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);row-gap:16px;column-gap:2px;align-content:start}
+.lt{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:16px 4px -2px;justify-self:stretch}.lt:first-child{margin-top:2px}.lt em{font-style:normal;opacity:.5;font-size:11px;letter-spacing:.06em}
+.tile{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;transition:transform .18s var(--ease)}
+.tile:active{transform:scale(.9)}
+.tile .ti{position:relative;display:grid;place-items:center;flex:none}
+.tile .tl{max-width:78px;padding:0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25}
+.scr.o-drw .drw .tile,.scr.o-drw .drw .lt{animation:tileIn .5s var(--ease) both;animation-delay:calc(var(--i,0)*13ms + 90ms)}
+@keyframes tileIn{from{opacity:0;transform:translateY(18px) scale(.94)}}
+.empty{grid-column:1/-1;text-align:center;padding:72px 12px;opacity:.75}
+.empty b{display:block;font-size:15px;margin-bottom:8px}
+.abc{position:absolute;right:3px;top:206px;bottom:70px;width:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;touch-action:none;z-index:3;opacity:0;transition:opacity .3s .2s}
+.scr.o-drw .abc{opacity:1}
+.abc b{display:block;font-size:9.5px;line-height:1.55;font-weight:700;opacity:.62;transition:transform .15s,opacity .15s}
+.abc b.on{opacity:1;transform:scale(1.5) translateX(-4px)}
+.bub{position:absolute;right:44px;top:0;width:58px;height:58px;display:grid;place-items:center;z-index:4;opacity:0;transform:scale(.6);transition:opacity .15s,transform .2s var(--spring);pointer-events:none}
+.bub.on{opacity:1;transform:none}
+/* sheets */
+.scrim{position:absolute;inset:0;z-index:28;background:rgba(0,0,0,.42);opacity:0;pointer-events:none;transition:opacity .32s}
+.scr.o-add .scrim,.scr.o-set .scrim{opacity:1;pointer-events:auto}
+.sht{position:absolute;left:0;right:0;bottom:0;z-index:30;max-height:84%;display:flex;flex-direction:column;padding:12px 20px 28px;color:var(--fg);transform:translateY(104%);transition:transform .46s var(--ease)}
+.scr.o-add .s-add,.scr.o-set .s-set{transform:none}
+.grip{flex:none;width:38px;height:4px;border-radius:2px;margin:0 auto 16px;background:currentColor;opacity:.35}
+.sht-hd{flex:none;display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
+.sht-hd em{font-style:normal;opacity:.65;white-space:nowrap}
+.sht-sc{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;margin:0 -18px;padding:2px 20px 16px;scrollbar-width:none;-webkit-mask-image:linear-gradient(#000 calc(100% - 22px),transparent);mask-image:linear-gradient(#000 calc(100% - 22px),transparent)}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);row-gap:16px}
+.tile .ck{position:absolute;right:-4px;top:-4px;width:19px;height:19px;display:grid;place-items:center;border-radius:50%;transform:scale(0);transition:transform .28s var(--spring);z-index:2}
+.tile .ck svg{width:11px;height:11px}
+.tile.sel .ck{transform:scale(1)}
+.btn{flex:none;display:block;width:100%;height:46px;margin-top:16px;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.s-set .sec{margin-top:20px}.s-set .sec:first-child{margin-top:0}
+.s-set h4{margin-bottom:8px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px;cursor:pointer}
+.row span{display:flex;flex-direction:column;gap:2px}
+.row small{opacity:.55}
+.tog{position:relative;flex:none;width:42px;height:24px;transition:background .25s,box-shadow .25s}
+.tog::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;transition:transform .3s var(--spring),background .25s}
+.tog.on::after{transform:translateX(18px)}
+.sw{display:flex;gap:8px;overflow-x:auto;margin:0 -18px;padding:4px 20px 8px;scrollbar-width:none}
+.swc{flex:none;width:54px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer}
+.swc i{display:block;width:54px;height:96px;background-size:cover;background-position:center;transition:transform .2s var(--ease),box-shadow .2s}
+.swc b{font-size:11px;opacity:.7}
+.swc.on b{opacity:1}
+.lnk{display:block;width:100%;text-align:center;margin-top:16px;opacity:.7;font-size:12px}
+/* edit mode */
+.scr.edit .rail .app{animation:wig .26s ease-in-out infinite alternate}
+.scr.edit .rail .app:nth-child(even){animation-delay:-.13s}
+@keyframes wig{from{transform:rotate(-3.5deg)}to{transform:rotate(3.5deg)}}
+.scr.edit .rail .app .x{display:grid;position:absolute;right:-6px;top:-6px;width:18px;height:18px;border-radius:50%;place-items:center;z-index:3;font:700 12px/1 "Noto Sans";font-style:normal}
+.scr.edit .rail .app .x::before{content:"×";margin-top:-1px}
+.rail .app.drag{z-index:9;animation:none!important;transform:translateY(var(--dy,0)) scale(1.14)!important;transition:none;filter:drop-shadow(0 8px 14px rgba(0,0,0,.5))}
+.edone{position:absolute;left:50%;top:40px;z-index:26;transform:translate(-50%,-24px);opacity:0;pointer-events:none;transition:opacity .3s,transform .4s var(--spring);white-space:nowrap}
+.scr.edit .edone{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.scr.edit .home>*:not(.rail){opacity:.35;transition:opacity .3s}
+/* launch + app view */
+.lx{position:absolute;inset:0;z-index:45;pointer-events:none;visibility:hidden;overflow:hidden}
+.lx.on{visibility:visible}
+.lx-ic{position:absolute;left:var(--x);top:var(--y);width:var(--s);height:var(--s);margin:calc(var(--s)/-2) 0 0 calc(var(--s)/-2);display:grid;place-items:center;z-index:3}
+.lx.on .lx-ic{animation:lxIc .62s var(--ease) both}
+@keyframes lxIc{0%{transform:scale(1)}35%{transform:scale(1.25)}100%{transform:translate(calc(180px - var(--x)),calc(330px - var(--y))) scale(2.3);opacity:0}}
+.lx .fx{position:absolute;inset:0;z-index:1}
+.appv{position:absolute;inset:0;z-index:44;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;opacity:0;visibility:hidden;transform:scale(1.04);transition:opacity .35s,transform .45s var(--ease),visibility 0s .35s;overflow:hidden}
+.scr.o-app .appv{opacity:1;visibility:visible;transform:none;transition:opacity .35s,transform .45s var(--ease)}
+.appv .av-ic{position:relative;display:grid;place-items:center;margin-bottom:12px}
+.appv .av-h{position:absolute;left:0;right:0;bottom:46px;font-size:11px;opacity:.6}
+.scr.o-app .appv .av-ic{animation:avIn .6s var(--spring) both .1s}
+@keyframes avIn{from{transform:scale(.5);opacity:0}}
+.scr.o-app .appv .av-n,.scr.o-app .appv .av-s{animation:fadeUp .6s var(--ease) both .2s}
+/* toast */
+.tst{position:absolute;left:50%;bottom:58px;z-index:60;max-width:300px;transform:translate(-50%,14px);opacity:0;transition:opacity .3s,transform .4s var(--spring);pointer-events:none;text-align:center}
+.tst.on{opacity:1;transform:translate(-50%,0)}
+.o-add .tst,.o-set .tst{bottom:auto;top:52px}.o-add .tst:not(.on),.o-set .tst:not(.on){transform:translate(-50%,-14px)}
+.scr .sb{z-index:70;transition:color .3s}
+.scr .gest{z-index:70}
+.scr.noanim *,.scr.noanim *::before,.scr.noanim *::after{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important;transition-delay:0ms!important}
+/* widget toggles */
+.scr.nowidget [data-w]{opacity:0!important;pointer-events:none;transition:opacity .3s}
+.mp .pp .pa{display:none}.mp.playing .pp .pa{display:block}.mp.playing .pp .pl{display:none}
+.mp .bar i::after{transition:width .4s linear}
+.mp.playing .bar i::after{animation:prog 26s linear infinite}
+@keyframes prog{from{width:62%}to{width:100%}}
+.sync rect{transform-box:fill-box;transform-origin:center}
+.scr .sync rect{animation:eq 1.1s ease-in-out infinite alternate;animation-delay:calc(var(--j)*-90ms)}
+@keyframes eq{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+
+
+.t09{--fg:#fff;--fg2:rgba(255,255,255,.6);--ac:#ff2b3a}
+.t09 .drw-bg{background:rgba(7,8,14,.92) linear-gradient(rgba(255,43,58,.05) 1px,transparent 1px) 0 0/24px 24px;backdrop-filter:blur(10px)}
+.t09 .drw-deco svg{position:absolute;inset:36px 8px 16px 8px;width:calc(100% - 16px);height:calc(100% - 52px)}
+.t09.o-drw .drw-deco{animation:flick .5s steps(2) both}
+@keyframes flick{0%{opacity:0}20%{opacity:1}30%{opacity:.2}45%{opacity:1}55%{opacity:.4}100%{opacity:1}}
+.t09 .drw-tt{flex-direction:column;align-items:flex-start;gap:8px}
+.t09 .drw-tt .cnt{order:-1;font:700 9.5px "Noto Sans Mono";letter-spacing:.16em;color:var(--ac);text-shadow:0 0 6px rgba(255,43,58,.8)}
+.t09 .drw-tt b{font:700 34px/1 "Nimbus Sans Narrow";text-transform:uppercase;color:rgba(255,43,58,.1);-webkit-text-stroke:1.2px #ff4652;filter:drop-shadow(0 0 5px rgba(255,43,58,.85))}
+.t09 .drw-tt .gear{position:absolute;right:12px;top:12px;color:var(--ac)}
+.t09 .srch{background:rgba(17,19,29,.9);box-shadow:inset 0 0 0 1px rgba(255,43,58,.7),0 0 12px rgba(255,43,58,.2);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);font:400 12px "Noto Sans Mono";letter-spacing:.04em}
+.t09 .srch>.mi{color:var(--ac)}
+.t09 .chip{height:27px;padding:0 12px;box-shadow:inset 0 0 0 1px rgba(255,43,58,.55);color:var(--fg2);font:700 9.5px/27px "Noto Sans Mono";letter-spacing:.1em;text-transform:uppercase;clip-path:polygon(7px 0,100% 0,calc(100% - 7px) 100%,0 100%);padding:0 16px}
+.t09 .chip.on{background:var(--ac);color:#fff}
+.t09 .lt i{font:700 9.5px "Noto Sans Mono";font-style:normal;color:var(--ac);-webkit-text-stroke:0;filter:none}.t09 .lt em{font:700 9px "Noto Sans Mono";color:#ff6b74;-webkit-text-stroke:0;filter:none;opacity:1}.t09 .lt{font:700 21px/1 "Nimbus Sans Narrow";text-transform:uppercase;color:rgba(255,43,58,.1);-webkit-text-stroke:1px #ff4652;filter:drop-shadow(0 0 4px rgba(255,43,58,.8))}
+.t09 .ti{width:44px;height:44px;background:#11131d;box-shadow:inset 0 0 0 1px var(--ac),0 0 10px rgba(255,43,58,.5);color:#ff5a64}
+.t09 .ti .mi{width:21px;height:21px;stroke-width:1.5;filter:drop-shadow(0 0 3px rgba(255,43,58,.95))}
+.t09 .tl{font:400 8.6px "Noto Sans Mono";letter-spacing:.03em;text-transform:uppercase;color:var(--fg2)}
+.t09 .abc b{font-family:"Noto Sans Mono";font-size:9px;color:#ff6b74}
+.t09 .bub{background:#11131d;box-shadow:inset 0 0 0 1px var(--ac),0 0 18px rgba(255,43,58,.6);font:700 28px "Nimbus Sans Narrow";color:#ff4652;text-shadow:0 0 10px rgba(255,43,58,.9)}
+.t09 .sht{background:rgba(9,10,16,.97);clip-path:polygon(0 16px,16px 0,100% 0,100% 100%,0 100%);box-shadow:inset 0 1.5px 0 var(--ac)}
+.t09 .sht-hd b{font:700 26px "Nimbus Sans Narrow";text-transform:uppercase;color:rgba(255,43,58,.1);-webkit-text-stroke:1px #ff4652;filter:drop-shadow(0 0 4px rgba(255,43,58,.8))}.t09 .sht-hd em{font:700 9.5px "Noto Sans Mono";color:var(--ac);letter-spacing:.1em}
+.t09 .s-set h4{font:700 9.5px "Noto Sans Mono";letter-spacing:.18em;color:var(--ac);text-transform:uppercase;text-shadow:0 0 6px rgba(255,43,58,.7)}
+.t09 .row{font:400 12px "Noto Sans Mono"}.t09 .row small{font-size:9.5px}
+.t09 .tog{background:#11131d;box-shadow:inset 0 0 0 1px rgba(255,43,58,.6)}.t09 .tog::after{background:rgba(255,255,255,.4)}
+.t09 .tog.on{background:rgba(255,43,58,.25);box-shadow:inset 0 0 0 1px var(--ac),0 0 12px rgba(255,43,58,.6)}.t09 .tog.on::after{background:var(--ac);box-shadow:0 0 8px var(--ac)}
+.t09 .swc.on i{box-shadow:0 0 0 1px var(--ac),0 0 16px rgba(255,43,58,.8)}.t09 .swc b{font:700 10px "Noto Sans Mono";color:#ff6b74}
+.t09 .btn,.t09 .edone{background:rgba(255,43,58,.08);color:#ff4652;box-shadow:inset 0 0 0 1px var(--ac),0 0 16px rgba(255,43,58,.35);font:700 12px/46px "Noto Sans Mono";letter-spacing:.24em;text-transform:uppercase;text-shadow:0 0 6px rgba(255,43,58,.8);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.t09 .edone{height:34px;padding:0 20px;line-height:34px;background:#0a0b12}
+.t09 .ck{border-radius:0;background:var(--ac);color:#fff;box-shadow:0 0 8px var(--ac)}
+.t09 .x{border-radius:0!important;background:var(--ac);color:#fff}
+.t09 .tst{padding:8px 16px;background:#0a0b12;box-shadow:inset 0 0 0 1px var(--ac),0 0 14px rgba(255,43,58,.4);font:700 10px "Noto Sans Mono";letter-spacing:.1em;color:#ff4652;text-transform:uppercase}
+.t09 .lx .fx u{position:absolute;inset:0;background:#07080e;opacity:0}
+.t09 .lx .fx i{position:absolute;left:0;right:0;top:0;height:2px;background:var(--ac);box-shadow:0 0 14px 3px rgba(255,43,58,.8);transform:translateY(-10px)}
+.t09 .lx .fx b{position:absolute;left:0;right:0;top:330px;text-align:center;font:700 64px "Nimbus Sans Narrow";color:rgba(255,43,58,.1);-webkit-text-stroke:1.2px #ff4652;filter:drop-shadow(0 0 8px rgba(255,43,58,.9));opacity:0}
+.t09 .lx .fx s{position:absolute;left:0;right:0;top:410px;text-align:center;font:700 11px "Noto Sans Mono";letter-spacing:.3em;color:#ff4652;text-decoration:none;opacity:0}
+.t09 .lx.on .fx u{animation:fadeIn .15s both}
+.t09 .lx.on .fx i{animation:scan .55s linear both}
+.t09 .lx.on .fx b,.t09 .lx.on .fx s{animation:flick .4s steps(2) both .1s}
+@keyframes scan{to{transform:translateY(810px)}}
+.t09 .appv{background:#07080e;color:#fff}
+.t09 .appv::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,43,58,.05) 1px,transparent 1px) 0 0/24px 24px}
+.t09 .av-br{position:absolute;inset:70px 26px 90px}
+.t09 .av-tag{position:relative;font:700 10px "Noto Sans Mono";letter-spacing:.24em;color:#ff4652;text-shadow:0 0 6px rgba(255,43,58,.8)}
+.t09 .av-ic{width:100px;height:100px;background:#11131d;box-shadow:inset 0 0 0 1.5px var(--ac),0 0 28px rgba(255,43,58,.55);color:#ff5a64}
+.t09 .av-ic .mi{width:46px;height:46px;stroke-width:1.4;filter:drop-shadow(0 0 5px rgba(255,43,58,.95))}
+.t09 .av-n{position:relative;font:700 46px/1 "Nimbus Sans Narrow";text-transform:uppercase;color:rgba(255,43,58,.1);-webkit-text-stroke:1.3px #ff4652;filter:drop-shadow(0 0 7px rgba(255,43,58,.9))}
+.t09 .av-s{position:relative;font:400 10px "Noto Sans Mono";letter-spacing:.12em;color:var(--fg2)}
+.t09 .av-h{font-family:"Noto Sans Mono";text-transform:uppercase;letter-spacing:.06em}
+
+
+.sym{font-family:"LXSym",sans-serif;font-style:normal}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.arow .ti,.sa-hd .ti,.lx-ic .ti,.ntf-ic{display:grid;place-items:center;flex:none}
+.scr .wp{background-size:cover;background-position:center}
+/* live overlay */
+.t09 .fxc{position:absolute;left:0;top:0;width:360px;height:800px;z-index:3;pointer-events:none}
+.t09 .scan{position:absolute;left:0;right:0;top:0;height:2px;z-index:6;pointer-events:none;background:#ff2b3a;box-shadow:0 0 14px 3px rgba(255,43,58,.6);opacity:0;animation:hudscan 13s linear infinite 4s}
+.t09 .scan.now{animation:hudscan 13s linear infinite 0s}
+.t09 .scan::before{content:"";position:absolute;left:0;right:0;bottom:2px;height:90px;background:linear-gradient(transparent,rgba(255,43,58,.13))}
+@keyframes hudscan{0%{transform:translateY(-4px);opacity:0}1%{opacity:.55}13%{transform:translateY(var(--ph,800px));opacity:.55}13.1%,100%{transform:translateY(var(--ph,800px));opacity:0}}
+.t09.noscan .scan,.t09.o-drw .scan,.t09.o-app .scan,.t09.noanim .scan{display:none}
+@keyframes flk9{0%,100%{opacity:1}50%{opacity:.2}}
+.t09.tickf .clk{animation:flk9 .14s steps(1) 3}
+/* clock reacts: ダーリン */
+.t09 .home .clk,.t09 .home .hud,.t09 .home .br,.t09 .home .sync{cursor:pointer}
+.t09 .home .clk,.t09 .home .hud,.t09 .home .br{transition:translate .5s var(--spring)}
+.t09.love .clk{animation:flk9 .12s steps(1) 4}
+.t09.love .br{animation:brLove 1.9s var(--ease)}
+@keyframes brLove{10%{transform:scale(1.06);filter:drop-shadow(0 0 8px #ff2b3a)}60%{transform:scale(1.02)}}
+.t09.love [data-hud]{color:#fff;text-shadow:0 0 8px #ff2b3a,0 0 16px #ff2b3a}
+.t09 .dl{position:absolute;left:24px;top:150px;z-index:7;font:700 24px/1 "Noto Sans CJK JP";font-style:normal;letter-spacing:.06em;color:#fff;text-shadow:0 0 8px #ff2b3a,0 0 22px #ff2b3a;pointer-events:none;animation:dlUp 1.9s var(--ease) both}
+.t09 .dl .sym{color:#ff4652}
+@keyframes dlUp{0%{opacity:0;transform:translateY(18px) scale(.8)}14%{opacity:1;transform:none}72%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
+.t09.ping .clk{animation:flk9 .12s steps(1) 5}
+.t09.ntf-on .home .clk,.t09.ntf-on .home .hud,.t09.ntf-on .home .br{translate:0 72px}
+/* rail: no clip so labels can fly out */
+.t09 .rail{clip-path:none;background:none;isolation:isolate}
+.t09 .rail::before{content:"";position:absolute;inset:0;z-index:-1;border:0;background:rgba(10,11,18,.62);clip-path:polygon(0 12px,12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%)}
+.t09 .rail::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border:1px solid rgba(255,43,58,.55);clip-path:polygon(0 12px,12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%)}
+.t09 .rail .app,.t09 .rail .add,.t09 .rail .all{position:relative}
+.t09 .rail .lb{position:absolute;right:calc(100% + 16px);top:50%;transform:translate(12px,-50%);opacity:0;pointer-events:none;white-space:nowrap;font:700 10px/1 "Noto Sans Mono";letter-spacing:.12em;text-transform:uppercase;color:#fff;text-shadow:0 0 6px rgba(255,43,58,.9);transition:opacity .22s,transform .4s var(--ease);transition-delay:calc(var(--i)*28ms)}
+.t09 .rail .rxbg{position:absolute;top:-1px;bottom:-1px;right:100%;width:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(7,8,14,0),rgba(7,8,14,.9) 38%);box-shadow:inset 0 1px 0 rgba(255,43,58,.45),inset 0 -1px 0 rgba(255,43,58,.45);transition:width .4s var(--ease)}
+.t09.exp .rail .rxbg{width:168px}
+.t09.exp .rail .lb{opacity:1;transform:translate(0,-50%);pointer-events:auto}
+.t09.exp .home>*:not(.rail){opacity:.4;transition:opacity .3s}
+.t09.side-l .rail{right:auto;left:10px}
+.t09.side-l .rail .lb{right:auto;left:calc(100% + 16px);transform:translate(-12px,-50%)}
+.t09.side-l.exp .rail .lb{transform:translate(0,-50%)}
+.t09.side-l .rail .rxbg{right:auto;left:100%;background:linear-gradient(-90deg,rgba(7,8,14,0),rgba(7,8,14,.9) 38%)}
+.t09.side-l .sync{left:auto;right:16px;flex-direction:row-reverse;text-align:right}
+.t09.edit .rail .lb{opacity:0!important}
+.t09 .rail .app.unread::after{content:"";position:absolute;right:-4px;top:-4px;width:9px;height:9px;background:#ff2b3a;box-shadow:0 0 0 2px #0a0b12,0 0 10px #ff2b3a;animation:flk9 1.1s steps(1) infinite}
+.rail .app.pop{animation:popIn .55s var(--spring) both}
+@keyframes popIn{0%{transform:scale(0) rotate(-45deg)}100%{transform:none}}
+.rail .app.bye{animation:bye .24s var(--ease) both!important}
+@keyframes bye{to{transform:scale(.3);opacity:0}}
+.rail.nope{animation:nope .45s}
+@keyframes nope{20%,60%{translate:-6px 0}40%,80%{translate:6px 0}}
+/* notification */
+.ntf{position:absolute;left:10px;right:10px;top:30px;z-index:65;display:flex;align-items:center;gap:12px;padding:12px 16px 12px 12px;transform:translateY(-150%);opacity:0;transition:transform .55s var(--spring),opacity .3s;cursor:pointer}
+.ntf.on{transform:none;opacity:1}
+.t09 .ntf{background:rgba(9,10,16,.92);backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px rgba(255,43,58,.75);clip-path:polygon(0 10px,10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}
+.t09 .ntf-ic{flex:none;width:38px;height:38px;display:grid;place-items:center;background:#11131d;box-shadow:inset 0 0 0 1px #ff2b3a,0 0 10px rgba(255,43,58,.5);color:#ff5a64;font-style:normal}
+.t09 .ntf-ic .mi{width:19px;height:19px;stroke-width:1.5;filter:drop-shadow(0 0 3px rgba(255,43,58,.95))}
+.t09 .ntf-b{flex:1;min-width:0}
+.t09 .ntf b{display:block;font:700 9.5px/1.3 "Noto Sans Mono";letter-spacing:.14em;color:#ff4652;text-shadow:0 0 6px rgba(255,43,58,.8)}
+.t09 .ntf span{display:block;margin-top:4px;font:400 13px/1.3 "Noto Sans";color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t09 .ntf em{align-self:flex-start;font:400 9px "Noto Sans Mono";font-style:normal;color:rgba(255,255,255,.55)}
+.t09 .ntf::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:#ff2b3a;box-shadow:0 0 8px #ff2b3a;transform-origin:left}
+.t09 .ntf.on::after{animation:ntfT 5.6s linear both}
+@keyframes ntfT{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+/* drawer additions */
+.t09 .drw-hd{padding-bottom:8px}
+.t09 .srch{margin-top:12px}
+.seg{position:relative;display:flex;height:30px;margin-top:12px;isolation:isolate}
+.seg button{flex:1;position:relative;z-index:1;transition:color .25s}
+.seg .k{position:absolute;top:0;bottom:0;left:0;width:50%;z-index:0;transform:translateX(calc(var(--k,0)*100%));transition:transform .38s var(--ease)}
+.t09 .seg{box-shadow:inset 0 0 0 1px rgba(255,43,58,.5);clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+.t09 .seg button{font:700 9.5px/30px "Noto Sans Mono";letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+.t09 .seg button.on{color:#fff}
+.t09 .seg .k{background:#ff2b3a;box-shadow:0 0 14px rgba(255,43,58,.7)}
+.seg.sm{width:146px;flex:none;margin:0;height:28px}
+.t09 .seg.sm button{line-height:28px;font-size:9px;letter-spacing:.1em}
+.scr[data-view=az] .chips,.scr[data-view=search] .chips{display:none}
+.sres{display:none}
+.scr[data-view=search] .sres{display:block;margin-top:12px}
+.t09 .sres{font:700 9.5px/1 "Noto Sans Mono";letter-spacing:.12em;text-transform:uppercase;color:#ff4652;text-shadow:0 0 6px rgba(255,43,58,.7)}
+.t09 mark{background:none;color:#fff;text-shadow:0 0 6px #ff2b3a,0 0 12px #ff2b3a;box-shadow:0 1px 0 #ff2b3a}
+.t09 .lt{cursor:pointer}
+.t09 .lt .jp{font:700 9.5px "Noto Sans CJK JP";letter-spacing:.14em;color:rgba(255,120,128,.85);-webkit-text-stroke:0;filter:none}
+.grid.list{grid-template-columns:1fr;row-gap:2px}
+.arow{display:flex;align-items:center;gap:12px;min-width:0;padding:4px 4px;text-align:left;transition:background .2s}
+.arow:active{background:rgba(255,43,58,.1)}
+.scr.o-drw .drw .arow{animation:tileIn .5s var(--ease) both;animation-delay:calc(var(--i,0)*13ms + 90ms)}
+.t09 .arow .ti{width:38px;height:38px}
+.t09 .arow .ti .mi{width:18px;height:18px}
+.arow .an{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.t09 .arow .an{font:400 14px/1.2 "Noto Sans";color:#fff}
+.t09 .arow .an small{font:700 8.5px/1 "Noto Sans Mono";letter-spacing:.12em;text-transform:uppercase;color:rgba(255,90,100,.85)}
+.arow .pin{flex:none;width:32px;height:32px;display:grid;place-items:center;font-style:normal;transition:background .2s,color .2s}
+.arow .pin svg{width:15px;height:15px}
+.t09 .arow .pin{color:#ff4652;box-shadow:inset 0 0 0 1px rgba(255,43,58,.6);clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}
+.t09 .arow .pin.on{background:#ff2b3a;color:#fff}
+.arow .pin.pulse{animation:popIn .4s var(--spring)}
+.t09 .lt-az{margin:12px 4px 2px}
+.t09 .lt-az span{font:700 24px/1 "Nimbus Sans Narrow";color:rgba(255,43,58,.1);-webkit-text-stroke:1px #ff4652;filter:drop-shadow(0 0 4px rgba(255,43,58,.8))}
+.t09 .lt-az::after{content:"";flex:1;height:1px;margin-left:12px;background:linear-gradient(90deg,rgba(255,43,58,.5),transparent)}
+.t09 .abc{top:250px;bottom:90px}
+.abc:empty{display:none}
+/* app sheet */
+.scr.o-sa .scrim{opacity:1;pointer-events:auto}
+.scr.o-sa .s-app{transform:none}
+.s-app .sa{display:flex;flex-direction:column;gap:8px}
+.sa-hd{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+.t09 .sa-hd .ti{width:54px;height:54px}
+.t09 .sa-hd .ti .mi{width:24px;height:24px}
+.t09 .sa-hd b{display:block;font:700 28px/1 "Nimbus Sans Narrow";text-transform:uppercase;color:rgba(255,43,58,.1);-webkit-text-stroke:1.1px #ff4652;filter:drop-shadow(0 0 4px rgba(255,43,58,.85))}
+.t09 .sa-hd.sm b{font-size:22px}
+.t09 .sa-hd small{display:block;margin-top:8px;font:700 9px/1 "Noto Sans Mono";letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+.sa-x{width:40px;height:40px;display:grid;place-items:center;flex:none}
+.sa-x svg{width:20px;height:20px}
+.t09 .sa-x{color:#ff4652;box-shadow:inset 0 0 0 1px rgba(255,43,58,.6)}
+.sa-act{display:flex;align-items:center;gap:12px;width:100%;height:46px;padding:0 16px;text-align:left;animation:fadeUp .4s var(--ease) both;animation-delay:calc(var(--i)*45ms)}
+.sa-act svg{flex:none;width:18px;height:18px}
+.sa-act span{flex:1}
+.sa-act .go{margin-left:auto;font-style:normal;display:grid}
+.t09 .sa-act{font:400 12.5px "Noto Sans Mono";color:#fff;background:rgba(17,19,29,.7);box-shadow:inset 0 0 0 1px rgba(255,43,58,.35);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.t09 .sa-act svg{color:#ff4652}
+.t09 .sa-act small{font:700 9.5px "Noto Sans CJK JP";color:rgba(255,120,128,.85);margin-left:8px}
+.t09 .sa-act .no{font:700 9.5px "Noto Sans Mono";font-style:normal;color:#ff4652}
+.t09 .sa-act em{font:700 9px "Noto Sans Mono";font-style:normal;color:rgba(255,255,255,.5)}
+.t09 .sa-act.cur{background:rgba(255,43,58,.16);box-shadow:inset 0 0 0 1px #ff2b3a,0 0 12px rgba(255,43,58,.3)}
+.t09 .sa-act:active{background:rgba(255,43,58,.22)}
+.stage:not(.fs) .fsonly{display:none}
+/* launch: STRELIZIA × APP, sync ring */
+.t09 .lx>u{position:absolute;inset:0;background:#07080e;opacity:0;text-decoration:none}
+.t09 .lx.on>u{animation:fadeIn .22s both}
+.t09 .lx>u::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,43,58,.05) 1px,transparent 1px) 0 0/24px 24px}
+.t09 .lx .sl{position:absolute;left:0;right:0;top:0;height:2px;z-index:2;background:#ff2b3a;box-shadow:0 0 14px 3px rgba(255,43,58,.8);transform:translateY(-10px)}
+.t09 .lx.on .sl{animation:scan .6s linear both}
+.t09 .lx .ring{position:absolute;left:90px;top:290px;width:180px;height:180px;z-index:2;opacity:0}
+.t09 .lx.on .ring{animation:ringIn .45s var(--ease) both .1s}
+@keyframes ringIn{from{opacity:0;transform:scale(.55) rotate(-90deg)}to{opacity:1;transform:none}}
+.t09 .lx .ring svg{width:100%;height:100%;overflow:visible;transform:rotate(-90deg)}
+.t09 .lx .ring circle{fill:none}
+.t09 .lx .r0{stroke:rgba(255,43,58,.18);stroke-width:2}
+.t09 .lx .r1{stroke:#ff2b3a;stroke-width:3.2;filter:drop-shadow(0 0 6px rgba(255,43,58,.95))}
+.t09 .lx .r2{stroke:rgba(255,43,58,.6);stroke-width:1.2;stroke-dasharray:2 7;transform-origin:90px 90px}
+.t09 .lx.on .r2{animation:spin9 2.6s linear infinite}
+@keyframes spin9{to{transform:rotate(360deg)}}
+.t09 .lx.ok .ring{animation:none;opacity:1;filter:drop-shadow(0 0 14px #ff2b3a)}
+.t09 .lx .lbl{position:absolute;left:0;right:0;top:248px;z-index:2;text-align:center;text-decoration:none;font:700 10px/1 "Noto Sans Mono";letter-spacing:.2em;color:#ff4652;text-shadow:0 0 6px rgba(255,43,58,.8);opacity:0}
+.t09 .lx .pct{position:absolute;left:0;right:0;top:492px;z-index:2;text-align:center;font:700 48px/1 "Nimbus Sans Narrow";color:rgba(255,43,58,.1);-webkit-text-stroke:1.2px #ff4652;filter:drop-shadow(0 0 8px rgba(255,43,58,.9));opacity:0}
+.t09 .lx .sub{position:absolute;left:0;right:0;top:552px;z-index:2;text-align:center;font:700 10px/1 "Noto Sans Mono";font-style:normal;letter-spacing:.22em;color:rgba(255,255,255,.7);opacity:0}
+.t09 .lx.on .lbl,.t09 .lx.on .pct,.t09 .lx.on .sub{animation:fadeIn .25s both .2s}
+.t09 .lx.ok .sub{color:#fff;text-shadow:0 0 8px #ff2b3a,0 0 16px #ff2b3a}
+.t09 .lx.ok .pct{animation:flk9 .1s steps(1) 3 both}
+.t09 .lx.on .lx-ic{animation:lxIc9 .55s var(--ease) both}
+
+.t09 .appv .av-s{letter-spacing:.08em}
+/* toasts sit above the sheets when one is open */
+.o-add .tst,.o-set .tst,.o-sa .tst{bottom:auto;top:52px}
+
+/* ═════ v3 ═════ */
+.sb .sb-air,.sb .sb-dnd,.sb .sb-chg{display:none}
+.air .sb .sb-air,.dnd .sb .sb-dnd,.chg .sb .sb-chg{display:inline-block}
+.air .sb .sb-sig,.wifioff .sb .sb-wifi{display:none}
+.eco .sb .bf{fill:#ffb020}
+/* parallax: overlays only, wallpaper never moves */
+.t09 .home{translate:calc(var(--px,0)*-5px) calc(var(--py,0)*-6px)}
+.t09 .fxc{translate:calc(var(--px,0)*-13px) calc(var(--py,0)*-15px)}
+/* badges */
+.bdg{position:absolute;right:-6px;top:-6px;z-index:2;min-width:15px;height:15px;padding:0 4px;display:grid;place-items:center;font:700 8.5px/1 "Noto Sans Mono";font-style:normal;color:#fff;background:#ff2b3a;box-shadow:0 0 0 2px #0a0b12,0 0 10px rgba(255,43,58,.9);animation:popIn .45s var(--spring) both}
+.t09.edit .rail .bdg{display:none}
+.arow .ti{position:relative}
+/* emblem on the wallpaper */
+.t09 .sig{position:absolute;left:258px;top:352px;z-index:1;width:64px;height:74px;cursor:pointer;font-style:normal}
+.t09 .sig::before,.t09 .sig::after{content:"";position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;border:2px solid #ff4652;box-shadow:0 0 18px #ff2b3a,inset 0 0 16px rgba(255,43,58,.7);opacity:0;pointer-events:none}
+.t09.sig-on .sig::before{animation:sigR 1.4s var(--ease) both}
+.t09.sig-on .sig::after{animation:sigR 1.4s var(--ease) both .28s}
+@keyframes sigR{0%{opacity:.95;transform:scale(.3)}100%{opacity:0;transform:scale(3.4)}}
+.t09.sig-on .clk{animation:flk9 .12s steps(1) 3}
+/* mini player */
+.t09 .mp{position:absolute;left:14px;bottom:66px;z-index:2;width:272px;height:50px;display:flex;align-items:center;gap:4px;padding:0 8px;background:rgba(9,10,16,.84);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1px rgba(255,43,58,.6);clip-path:polygon(0 8px,8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .35s,transform .45s var(--spring)}
+.t09.mp-on .mp{opacity:1;transform:none;pointer-events:auto}
+.t09.side-l .mp{left:auto;right:14px}
+.t09 .mp-i{flex:none;width:36px;height:36px;display:grid;place-items:center;color:#ff5a64;background:#11131d;box-shadow:inset 0 0 0 1px #ff2b3a}
+.t09 .mp-i .mi{width:17px;height:17px;stroke-width:1.5}
+.t09.mp-play .mp-i{animation:mpG 1.2s ease-in-out infinite alternate}
+@keyframes mpG{to{box-shadow:inset 0 0 0 1px #ff2b3a,0 0 14px rgba(255,43,58,.8)}}
+.t09 .mp-t{flex:1;min-width:0;padding:0 4px;cursor:pointer}
+.t09 .mp-t b{display:block;font:700 9.5px/1.25 "Noto Sans Mono";letter-spacing:.01em;text-transform:uppercase;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t09 .mp-t span{display:block;font:400 8.5px/1.3 "Noto Sans Mono";color:rgba(255,120,128,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mp-bar{display:block;position:relative;height:2px;margin-top:4px;background:rgba(255,43,58,.2);overflow:hidden;font-style:normal}
+.mp-bar i{position:absolute;inset:0;background:#ff2b3a;box-shadow:0 0 6px #ff2b3a;transform-origin:left;transform:scaleX(0);transition:transform 1s linear}
+.mpb{flex:none;width:27px;height:30px;display:grid;place-items:center;color:#ff4652}
+.mpb svg{width:15px;height:15px}
+.mpb.pl{width:32px;height:32px;color:#fff;background:#ff2b3a;box-shadow:0 0 10px rgba(255,43,58,.7);clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}
+.mpb.x{width:20px;color:rgba(255,255,255,.5)}
+.mpb.x svg{width:11px;height:11px}
+.t09 .sync svg rect{transform-box:fill-box;transform-origin:center}
+.t09.mp-play .sync svg rect{animation:eqb .48s ease-in-out infinite alternate;animation-delay:calc(var(--j,0)*-61ms)}
+@keyframes eqb{from{transform:scaleY(.3)}to{transform:scaleY(1.3)}}
+/* App Vault */
+.vault{position:absolute;inset:0;z-index:18;visibility:hidden;transform:translateX(-102%);transition:transform .5s var(--ease),visibility 0s .5s}
+.scr.o-vault .vault{visibility:visible;transform:none;transition:transform .5s var(--ease)}
+.scr.o-vault .home{opacity:0;transform:translateX(70px) scale(.97);pointer-events:none}
+.t09 .vault::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,43,58,.04) 1px,transparent 1px) 0 0/24px 24px,rgba(7,8,14,.86);backdrop-filter:blur(8px)}
+.v-in{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;padding:48px 16px 36px;touch-action:pan-y;scrollbar-width:none}
+.v-in::-webkit-scrollbar{display:none}
+.t09 .v-hd b{display:block;font:700 34px/1 "Nimbus Sans Narrow";text-transform:uppercase;color:rgba(255,43,58,.1);-webkit-text-stroke:1.2px #ff4652;filter:drop-shadow(0 0 5px rgba(255,43,58,.85))}
+.t09 .v-hd>span{display:block;margin-top:8px;font:700 9.5px "Noto Sans Mono";letter-spacing:.16em;color:rgba(255,255,255,.6)}
+.t09 .vc{position:relative;margin-top:12px;padding:12px 16px 16px;background:rgba(17,19,29,.76);box-shadow:inset 0 0 0 1px rgba(255,43,58,.36);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.scr.o-vault .vc{animation:fadeUp .5s var(--ease) both;animation-delay:calc(var(--i)*60ms + 120ms)}
+.t09 .vc h5{display:flex;align-items:center;gap:8px;margin:0 0 12px;font:700 9.5px/1 "Noto Sans Mono";letter-spacing:.16em;text-transform:uppercase;color:#ff4652;text-shadow:0 0 6px rgba(255,43,58,.6)}
+.t09 .vc h5 i{font-style:normal;opacity:.8}
+.t09 .vc h5 span{margin-left:auto;font-weight:400;letter-spacing:.04em;text-transform:none;color:rgba(255,255,255,.5);text-shadow:none}
+.t09 .vc h5 .jp{font-family:"Noto Sans CJK JP";color:rgba(255,120,128,.85)}
+.pl-n{display:flex;align-items:center;justify-content:space-between}
+.pl-n span{display:flex;flex-direction:column;gap:4px}
+.pl-n .r{text-align:right;align-items:flex-end}
+.t09 .pl-n b{font:700 20px/1 "Nimbus Sans Narrow";letter-spacing:.04em;color:#fff}
+.t09 .pl-n small{font:400 8.5px "Noto Sans Mono";letter-spacing:.1em;color:rgba(255,255,255,.55)}
+.t09 .pl-n em{font:700 22px "Nimbus Sans Narrow";font-style:normal;color:#ff2b3a;text-shadow:0 0 8px #ff2b3a}
+.pl-w{position:relative;display:flex;align-items:center;gap:8px;margin:8px 0 12px}
+.plc{width:220px;height:46px;flex:none}
+.t09 .pl-w b{margin-left:auto;font:700 28px/1 "Nimbus Sans Narrow";color:rgba(255,43,58,.1);-webkit-text-stroke:1px #ff4652;filter:drop-shadow(0 0 4px rgba(255,43,58,.8))}
+.hold{display:flex;align-items:center;gap:12px;width:100%;padding:8px 12px;text-align:left;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.t09 .hold{background:rgba(255,43,58,.07);box-shadow:inset 0 0 0 1px rgba(255,43,58,.5);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:background .25s,box-shadow .25s}
+.t09 .hold.on{background:rgba(255,43,58,.16)}
+.t09 .hold.win{background:rgba(255,43,58,.28);box-shadow:inset 0 0 0 1px #ff2b3a,0 0 20px rgba(255,43,58,.5)}
+.hold-r{position:relative;flex:none;width:40px;height:40px;display:grid;place-items:center;font-style:normal}
+.hold-r>svg:first-child{position:absolute;inset:0;width:40px;height:40px;transform:rotate(-90deg)}
+.hold-r circle{fill:none;stroke:rgba(255,43,58,.25);stroke-width:2}
+.hold-r .hr{stroke:#ff2b3a;stroke-width:2.6;stroke-dasharray:106.8;stroke-dashoffset:106.8;filter:drop-shadow(0 0 4px #ff2b3a)}
+.hold-r>svg:last-child{width:16px;height:16px;color:#ff4652}
+.t09 .hold.win .hold-r>svg:last-child{color:#fff;animation:popIn .5s var(--spring)}
+.hold>span{display:flex;flex-direction:column;gap:4px}
+.t09 .hold b{font:700 11px "Noto Sans Mono","Noto Sans CJK JP";letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.t09 .hold small{font:400 9px "Noto Sans Mono","Noto Sans CJK JP";color:rgba(255,120,128,.9)}
+.t09 .pl-tm{display:block;margin-top:8px;font:400 9.5px "Noto Sans Mono";color:rgba(255,255,255,.55)}
+.t09 .pl-tm b{color:#fff}
+.ht{position:absolute;left:var(--x);bottom:40px;width:18px;height:18px;color:#ff2b3a;filter:drop-shadow(0 0 6px #ff2b3a);pointer-events:none;font-style:normal;animation:htUp 1.6s var(--ease) both var(--d)}
+.ht svg{width:100%;height:100%}
+@keyframes htUp{0%{opacity:0;transform:translateY(10px) scale(.4)}20%{opacity:1;transform:scale(var(--s))}100%{opacity:0;transform:translateY(-120px) scale(var(--s))}}
+.wx-n{display:flex;align-items:center;gap:16px}
+.t09 .wx-n b{font:700 46px/1 "Nimbus Sans Narrow";color:rgba(255,43,58,.1);-webkit-text-stroke:1.2px #ff4652;filter:drop-shadow(0 0 5px rgba(255,43,58,.85))}
+.t09 .wx-n span{display:flex;flex-direction:column;gap:4px;font:400 13px "Noto Sans";color:#fff}
+.t09 .wx-n small{font:400 9.5px "Noto Sans Mono";color:rgba(255,255,255,.55)}
+.wx-h{display:flex;justify-content:space-between;margin-top:12px}
+.wx-h span{display:flex;flex-direction:column;align-items:center;width:44px;height:74px}
+.t09 .wx-h small{font:400 8.5px "Noto Sans Mono";color:rgba(255,255,255,.55)}
+.wx-h i{display:block;margin-top:auto;width:4px;height:var(--h);background:linear-gradient(#ff2b3a,rgba(255,43,58,.15));box-shadow:0 0 6px rgba(255,43,58,.6);font-style:normal}
+.t09 .wx-h b{margin-top:4px;font:700 11px "Noto Sans Mono";color:#fff}
+.cal-w{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-w span{display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0}
+.t09 .cal-w small{font:400 8px "Noto Sans Mono";text-transform:uppercase;color:rgba(255,255,255,.5)}
+.t09 .cal-w b{font:700 13px "Noto Sans Mono";color:#fff}
+.t09 .cal-w .on{background:#ff2b3a;box-shadow:0 0 12px rgba(255,43,58,.6);clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px)}
+.t09 .cal-w .on small{color:#fff}
+.cal-e{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.cal-e li{display:flex;gap:12px;align-items:baseline}
+.t09 .cal-e b{flex:none;width:38px;font:700 10px "Noto Sans Mono";color:#ff4652}
+.t09 .cal-e span{font:400 12.5px "Noto Sans";color:#fff}
+.cal-e li.past{opacity:.36}
+.vm{display:flex;align-items:center;gap:12px}
+.vm .ti{position:relative;display:grid;place-items:center;flex:none}
+.vm-t{display:flex;flex-direction:column;gap:4px;min-width:0}
+.t09 .vm-t b{font:700 13px "Noto Sans Mono";text-transform:uppercase;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t09 .vm-t small{font:400 10px "Noto Sans Mono";color:rgba(255,120,128,.9)}
+.mp-bar.big{height:3px;margin-top:12px}
+.vm-c{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.t09 .vm-c small{font:400 9.5px "Noto Sans Mono";color:rgba(255,255,255,.55)}
+.vm-c span{display:flex;gap:8px;align-items:center}
+.vm-c .mpb{width:36px;height:34px}
+.vm-c .mpb.pl{width:40px;height:38px}
+.note{display:block;width:100%;min-height:62px;resize:none;border:0;outline:0;background:transparent;color:#fff;font:400 13px/1.5 "Noto Sans";padding:0;caret-color:#ff2b3a;touch-action:auto}
+.sy-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sy-g span{display:flex;flex-direction:column;gap:4px;padding:8px 12px;background:rgba(255,43,58,.06);box-shadow:inset 0 0 0 1px rgba(255,43,58,.25)}
+.t09 .sy-g small{font:400 8.5px "Noto Sans Mono";letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.t09 .sy-g b{font:700 18px "Nimbus Sans Narrow";color:#fff}
+.t09 .v-ht{margin:16px 0 0;text-align:center;font:700 9px "Noto Sans Mono";letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+/* quick settings shade */
+.shade{position:absolute;left:0;right:0;top:0;z-index:67;padding:36px 16px 20px;visibility:hidden;transform:translateY(-104%);transition:transform .5s var(--ease),visibility 0s .5s}
+.scr.o-shade .shade{visibility:visible;transform:none;transition:transform .5s var(--ease)}
+.t09 .shade{background:linear-gradient(rgba(255,43,58,.04) 1px,transparent 1px) 0 0/24px 24px,rgba(8,9,15,.96);backdrop-filter:blur(12px);box-shadow:inset 0 -1.5px 0 #ff2b3a;clip-path:polygon(0 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px))}
+.scr.o-shade .scrim{opacity:1;pointer-events:auto}
+.sd-top{display:flex;align-items:center;gap:12px}
+.t09 .sd-clk{font:700 40px/1 "Nimbus Sans Narrow";color:rgba(255,43,58,.1);-webkit-text-stroke:1.2px #ff4652;filter:drop-shadow(0 0 5px rgba(255,43,58,.85))}
+.sd-top>span{flex:1;display:flex;flex-direction:column;gap:4px}
+.t09 .sd-top>span{font:400 12px "Noto Sans";color:#fff}
+.t09 .sd-top small{font:400 9.5px "Noto Sans Mono";color:rgba(255,255,255,.55)}
+.shade .gear{position:relative;inset:auto;flex:none;width:36px;height:36px;display:grid;place-items:center;color:#ff4652;box-shadow:inset 0 0 0 1px rgba(255,43,58,.5)}
+.shade .gear .mi{width:18px;height:18px}
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.q{display:flex;align-items:center;gap:12px;height:48px;padding:0 12px;text-align:left;transition:background .25s,box-shadow .25s,color .25s,transform .15s}
+.q svg{flex:none;width:19px;height:19px}
+.q span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.t09 .q{color:#ff4652;background:rgba(17,19,29,.85);box-shadow:inset 0 0 0 1px rgba(255,43,58,.4);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.t09 .q span{font:700 10.5px "Noto Sans Mono";letter-spacing:.03em;color:#fff}
+.t09 .q small{font:400 8.5px "Noto Sans Mono";color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t09 .q.on{background:#ff2b3a;color:#fff;box-shadow:0 0 16px rgba(255,43,58,.6)}
+.t09 .q.on small{color:rgba(255,255,255,.85)}
+.q:active{transform:scale(.97)}
+.scr.o-shade .q{animation:fadeUp .4s var(--ease) both}
+.brt{display:flex;align-items:center;gap:12px;margin-top:12px}
+.brt-ic{flex:none;width:20px;height:20px;display:grid;color:#ff4652;font-style:normal}
+.brt-ic svg{width:20px;height:20px}
+.brt-tr{position:relative;flex:1;height:30px;touch-action:none;cursor:pointer}
+.brt-tr::before{content:"";position:absolute;left:0;right:0;top:13px;height:4px;background:rgba(255,43,58,.2)}
+.brt-f{position:absolute;left:0;right:0;top:13px;height:4px;background:#ff2b3a;box-shadow:0 0 8px #ff2b3a;transform-origin:left;font-style:normal}
+.brt-k{position:absolute;top:6px;width:18px;height:18px;margin-left:-9px;background:#0a0b12;box-shadow:inset 0 0 0 2px #ff2b3a,0 0 10px rgba(255,43,58,.8);transform:rotate(45deg);font-style:normal}
+.nl{margin-top:16px}
+.nl h6{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}
+.t09 .nl h6 span{font:700 9.5px "Noto Sans Mono";letter-spacing:.16em;text-transform:uppercase;color:#ff4652}
+.t09 .nl h6 button{padding:4px 8px;font:700 9px "Noto Sans Mono";letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.nl-ls{display:flex;flex-direction:column;gap:8px}
+.nl-i{display:flex;align-items:center;gap:12px;padding:8px 12px;cursor:pointer;touch-action:pan-y;transition:translate .25s var(--ease),opacity .25s}
+.t09 .nl-i{background:rgba(17,19,29,.9);box-shadow:inset 0 0 0 1px rgba(255,43,58,.3)}
+.nl-i .ti{width:34px;height:34px;display:grid;place-items:center;flex:none}
+.t09 .nl-i .ti .mi{width:16px;height:16px}
+.nl-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.t09 .nl-t b{font:700 9px "Noto Sans Mono";letter-spacing:.12em;color:#ff4652}
+.t09 .nl-t span{font:400 12px "Noto Sans";color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t09 .nl-i em{align-self:flex-start;font:400 8.5px "Noto Sans Mono";font-style:normal;color:rgba(255,255,255,.45)}
+.nl-i.gone{translate:110% 0;opacity:0}
+.t09 .nl-e{margin:8px 0;text-align:center;font:400 11px "Noto Sans Mono","Noto Sans CJK JP";color:rgba(255,255,255,.45)}
+.sd-grip{display:block;width:44px;height:4px;margin:16px auto 0;background:rgba(255,43,58,.6);font-style:normal}
+/* shortcuts popup */
+.qa{position:absolute;right:66px;top:300px;z-index:36;width:214px;padding:12px;opacity:0;transform:translateX(14px) scale(.92);transform-origin:right var(--oy,50%);pointer-events:none;transition:opacity .22s,transform .35s var(--spring)}
+.scr.o-qa .qa{opacity:1;transform:none;pointer-events:auto}
+.t09.side-l .qa{right:auto;left:66px;transform-origin:left var(--oy,50%);transform:translateX(-14px) scale(.92)}
+.t09.side-l.o-qa .qa{transform:none}
+.t09 .qa{background:rgba(9,10,16,.96);box-shadow:inset 0 0 0 1px rgba(255,43,58,.75);clip-path:polygon(0 10px,10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}
+.scr.o-qa .scrim{opacity:0;pointer-events:auto}
+.t09.o-qa .home>*:not(.rail):not(.mp){opacity:.35}
+.t09.mp-on.o-qa .mp,.t09.mp-on.exp .mp,.t09.mp-on.edit .mp{opacity:.35}
+.t09.exp .home>.mp:not(.x),.t09.edit .home>.mp:not(.x){transition:opacity .3s}
+.t09.o-qa .rail .app:not(.held),.t09.o-qa .rail .add,.t09.o-qa .rail .all{opacity:.35}
+.t09 .rail .app.held{box-shadow:inset 0 0 0 1px #fff,0 0 18px #ff2b3a;transform:scale(1.08)}
+.qa-hd{display:flex;align-items:center;gap:12px;padding:2px 2px 12px;margin-bottom:4px;border-bottom:1px solid rgba(255,43,58,.3)}
+.qa-hd .ti{width:32px;height:32px;display:grid;place-items:center;flex:none}
+.t09 .qa-hd .ti .mi{width:16px;height:16px}
+.t09 .qa-hd b{font:700 19px/1 "Nimbus Sans Narrow";text-transform:uppercase;color:rgba(255,43,58,.1);-webkit-text-stroke:1px #ff4652;filter:drop-shadow(0 0 4px rgba(255,43,58,.8))}
+.qa-i{display:flex;align-items:center;gap:8px;width:100%;height:38px;padding:0 8px;text-align:left;animation:fadeUp .35s var(--ease) both;animation-delay:calc(var(--i)*45ms)}
+.t09 .qa-i{font:400 12px "Noto Sans Mono";color:#fff}
+.qa-i svg{flex:none;width:14px;height:14px;color:#ff4652}
+.qa-i:active{background:rgba(255,43,58,.15)}
+.qa-ft{display:flex;gap:8px;margin-top:8px}
+.qa-ft button{display:flex;align-items:center;justify-content:center;gap:8px;height:34px;padding:0 12px}
+.qa-ft button:first-child{flex:1}
+.t09 .qa-ft button{font:700 9px "Noto Sans Mono";letter-spacing:.08em;text-transform:uppercase;color:#ff4652;box-shadow:inset 0 0 0 1px rgba(255,43,58,.55)}
+.qa-ft svg{width:14px;height:14px;flex:none}
+.t09 .qa-ht{display:block;margin-top:8px;text-align:center;font:400 8.5px "Noto Sans Mono";color:rgba(255,255,255,.4)}
+/* klaxosaur alert */
+.alert{position:absolute;inset:0;z-index:63;pointer-events:none;visibility:hidden}
+.scr.alert-on .alert{visibility:visible}
+.al-fr{position:absolute;inset:0;box-shadow:inset 0 0 0 3px #ff2b3a,inset 0 0 80px rgba(255,20,40,.75);opacity:0;font-style:normal}
+.alert-on .al-fr{animation:alP .7s ease-in-out infinite alternate}
+@keyframes alP{from{opacity:.3}to{opacity:1}}
+.al-bd{position:absolute;left:0;right:0;top:262px;height:22px;overflow:hidden;background:repeating-linear-gradient(-45deg,#ff2b3a 0 10px,#0a0b12 10px 20px);opacity:0;transform:scaleY(0)}
+.al-bd span{position:absolute;left:0;top:3px;padding:0 8px;white-space:nowrap;font:700 11px/16px "Noto Sans Mono","Noto Sans CJK JP";letter-spacing:.2em;color:#fff;background:#0a0b12;animation:alM 7s linear infinite}
+@keyframes alM{to{transform:translateX(-50%)}}
+.alert-on .al-bd{opacity:1;transform:none;transition:transform .35s var(--spring),opacity .2s}
+.al-c{position:absolute;left:24px;right:24px;top:300px;padding:16px;pointer-events:auto;background:rgba(9,10,16,.93);box-shadow:inset 0 0 0 1px #ff2b3a;clip-path:polygon(0 12px,12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%);opacity:0;transform:scale(.9)}
+.alert-on .al-c{opacity:1;transform:none;transition:opacity .3s,transform .45s var(--spring)}
+.t09 .al-c b{display:block;font:700 30px/1 "Nimbus Sans Narrow","Noto Sans CJK JP";text-transform:uppercase;color:rgba(255,43,58,.12);-webkit-text-stroke:1.2px #ff4652;filter:drop-shadow(0 0 6px #ff2b3a)}
+.alert-on .al-c b{animation:flk9 .6s steps(1) infinite}
+.t09 .al-c span{display:block;margin-top:8px;font:400 12.5px/1.45 "Noto Sans";color:#fff}
+.al-b{display:flex;gap:8px;margin-top:16px}
+.al-b button{flex:1;height:40px;font:700 10.5px "Noto Sans Mono";letter-spacing:.14em;text-transform:uppercase}
+.al-b button:first-child{background:#ff2b3a;color:#fff;box-shadow:0 0 14px rgba(255,43,58,.7)}
+.al-b button:last-child{color:#ff4652;box-shadow:inset 0 0 0 1px rgba(255,43,58,.6)}
+.t09.alert-on .clk{animation:flk9 .6s steps(1) infinite}
+.av-hr,.lx-ic .av-hr{display:block;width:64px;height:30px;font-style:normal}
+.lx-ic .av-hr{width:30px;height:15px}
+.av-hr svg{width:100%;height:100%}
+/* lock screen / AOD */
+.lock{position:absolute;inset:0;z-index:80;background:#000;opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s .35s;touch-action:none}
+.scr.locked .lock{opacity:1;visibility:visible;transition:opacity .35s}
+.scr.locked.unlocking .lock{opacity:0;transition:opacity .22s}
+.aod{position:absolute;left:0;right:0;top:160px;display:flex;flex-direction:column;align-items:center;translate:var(--ax,0) var(--ay,0);transition:translate 1.2s}
+.a-hr{display:block;width:64px;height:30px;font-style:normal}
+.a-hr svg{width:100%;height:100%}
+.a-clk{display:flex;flex-direction:column;align-items:center;margin-top:12px}
+.t09 .a-clk b{font:700 108px/.9 "Nimbus Sans Narrow";letter-spacing:.02em;color:rgba(255,43,58,.06);-webkit-text-stroke:1.4px #ff4652;filter:drop-shadow(0 0 6px rgba(255,43,58,.8))}
+.scr.locked .a-clk b,.scr.locked .a-hr{animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.7}50%{opacity:1}}
+.t09 .a-dt{margin-top:20px;font:700 10px "Noto Sans Mono";letter-spacing:.18em;color:rgba(255,255,255,.7)}
+.a-nt{display:flex;gap:8px;min-height:28px;margin-top:16px}
+.a-nt .ti{width:28px;height:28px;display:grid;place-items:center;font-style:normal}
+.t09 .a-nt .ti{background:#0a0b12;box-shadow:inset 0 0 0 1px rgba(255,43,58,.7)}
+.t09 .a-nt .ti .mi{width:14px;height:14px}
+.fp{position:absolute;left:50%;top:636px;width:70px;height:70px;margin-left:-35px;display:grid;place-items:center;color:rgba(255,70,82,.75);cursor:pointer;-webkit-touch-callout:none;user-select:none}
+.fp>svg{width:36px;height:36px;filter:drop-shadow(0 0 6px rgba(255,43,58,.8));transition:color .2s}
+.fp-r{position:absolute;inset:0;font-style:normal}
+.fp-r svg{width:100%;height:100%;transform:rotate(-90deg)}
+.fp-r circle{fill:none;stroke:rgba(255,43,58,.18);stroke-width:1.5}
+.fp-r .fr{stroke:#ff2b3a;stroke-width:2.4;stroke-dasharray:194.8;stroke-dashoffset:194.8;filter:drop-shadow(0 0 4px #ff2b3a);transition:stroke-dashoffset .2s}
+.fp.on .fr{stroke-dashoffset:0;transition:stroke-dashoffset .55s linear}
+.fp.on>svg,.fp.ok>svg{color:#fff}
+.t09 .a-ht{position:absolute;left:0;right:0;top:724px;margin:0;text-align:center;font:400 8.5px "Noto Sans Mono";letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+/* boot sequence */
+.boot{position:absolute;inset:0;z-index:82;display:flex;align-items:center;justify-content:center;background:#07080e;visibility:hidden;opacity:0;pointer-events:none}
+.boot.on{visibility:visible;animation:bootF 1.25s both}
+@keyframes bootF{0%,66%{opacity:1}100%{opacity:0}}
+.boot::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,43,58,.05) 1px,transparent 1px) 0 0/24px 24px}
+.bt-in{position:relative;width:262px;display:flex;flex-direction:column;gap:12px}
+.bt-in p{display:flex;align-items:baseline;gap:8px;margin:0;font:400 10.5px "Noto Sans Mono","Noto Sans CJK JP";letter-spacing:.1em;color:rgba(255,255,255,.75);opacity:0}
+.boot.on .bt-in p{animation:btL .3s steps(6) both;animation-delay:calc(var(--i)*120ms + 60ms)}
+@keyframes btL{from{opacity:1;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+.bt-in p i{flex:1;border-bottom:1px dotted rgba(255,43,58,.5);transform:translateY(-3px);font-style:normal}
+.bt-in p b{color:#ff4652;text-shadow:0 0 6px rgba(255,43,58,.8)}
+.bt-in p:first-child b:first-child{color:#fff;text-shadow:none}
+.bt-sl{position:absolute;left:0;right:0;top:0;height:2px;background:#ff2b3a;box-shadow:0 0 14px 3px rgba(255,43,58,.8);transform:translateY(-10px);font-style:normal}
+.boot.on .bt-sl{animation:scan .9s linear both .1s}
+/* torch + brightness */
+.torch{position:absolute;inset:0;z-index:88;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(70% 42% at 50% 0%,rgba(255,250,240,.5),rgba(255,240,220,.1) 55%,transparent 75%);mix-blend-mode:screen;font-style:normal}
+.scr.torch-on .torch{opacity:1}
+.dim{position:absolute;inset:0;z-index:90;pointer-events:none;background:#000;opacity:0;font-style:normal}
+/* search easter eggs */
+.egg:empty{display:none}
+.egc{position:relative;margin:4px 0 16px;padding:16px;animation:fadeUp .45s var(--ease) both}
+.t09 .egc{background:rgba(255,43,58,.1);box-shadow:inset 0 0 0 1px #ff2b3a;clip-path:polygon(0 10px,10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%)}
+.eg-hr{position:absolute;right:12px;top:12px;width:46px;height:22px;font-style:normal;opacity:.85}
+.eg-hr svg{width:100%;height:100%}
+.t09 .egc b{display:block;padding-right:56px;font:700 22px/1 "Nimbus Sans Narrow","Noto Sans CJK JP";text-transform:uppercase;color:rgba(255,43,58,.1);-webkit-text-stroke:1px #ff4652;filter:drop-shadow(0 0 4px rgba(255,43,58,.85))}
+.t09 .egc span{display:block;margin-top:8px;font:400 12.5px/1.4 "Noto Sans";color:#fff}
+.t09 .egc button{margin-top:12px;height:34px;padding:0 16px;font:700 9.5px "Noto Sans Mono","Noto Sans CJK JP";letter-spacing:.14em;text-transform:uppercase;color:#fff;background:#ff2b3a;box-shadow:0 0 12px rgba(255,43,58,.6)}
+.o-shade .tst,.o-vault .tst{bottom:auto;top:52px}
+.locked .tst{z-index:85;bottom:auto;top:60px}
+
+.mp-on .tst{bottom:128px}
+.scr.edit .home>.mp,.t09.exp .home>.mp{opacity:0}
+.t09.mp-on.exp .home>.mp,.t09.mp-on.edit .home>.mp{opacity:.35}
+.t09 .sig .sg{position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,90,100,.85),rgba(255,43,58,.32) 55%,transparent);mix-blend-mode:screen;opacity:0;pointer-events:none;font-style:normal}
+.t09.sig-on .sig .sg{animation:sigG 1.3s ease-out both}
+@keyframes sigG{0%{opacity:0}14%{opacity:1}100%{opacity:0}}
+
+/* launch icon: always a 44px box centred on its source, scaled to the source size */
+.lx-ic{width:44px;height:44px;margin:-22px 0 0 -22px;place-content:center}
+.lx-ic .ti{margin:0}
+@keyframes lxIc9{from{transform:scale(var(--k0,1))}to{transform:translate(calc(180px - var(--x)),calc(380px - var(--y))) scale(1.55)}}
+
+
+html.native,html.native body{margin:0;width:100%;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+html.native body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+html.native #stage{position:fixed;inset:0;overflow:hidden;touch-action:none}
+html.native .stage>.scr{position:absolute;left:50%;top:50%;transform-origin:center}
+html.native .scr .wp{height:100%}
+img.ni{display:block;object-fit:contain;-webkit-user-drag:none;pointer-events:none}
+.t09 img.ni{filter:drop-shadow(0 0 2.5px rgba(255,43,58,.85))}
+html.native .ntf{top:calc(var(--sat,26px) + 6px)}
+html.native .t09 .shade{padding-top:calc(var(--sat,28px) + 12px)}
+html.native .drw-in{padding-top:max(32px,calc(var(--sat,0px) + 8px))}
+html.native .v-in{padding-top:max(48px,calc(var(--sat,0px) + 20px))}
+html.native .o-add .tst,html.native .o-set .tst,html.native .o-sa .tst,html.native .o-hello .tst{bottom:auto;top:calc(var(--sat,26px) + 22px)}
+html.native .drw-ls::after,html.native .v-in::after,html.native .sht-sc::after{content:"";display:block;height:var(--kb,0px)}
+html.native .sht{padding-bottom:calc(20px + var(--sab,8px))}
+.lx.bye{opacity:0;transition:opacity .22s}
+.shade .gear svg{width:18px;height:18px}
+.t09 .row b.st{flex:none;font:700 9px/1 "Noto Sans Mono";letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.t09 .row b.st.on{color:#ff4652;text-shadow:0 0 6px rgba(255,43,58,.7)}
+.row.city{cursor:default}
+.row.city input{flex:none;width:128px;height:32px;padding:0 12px;border:0;outline:0;border-radius:0;background:rgba(255,43,58,.08);box-shadow:inset 0 0 0 1px rgba(255,43,58,.5);color:#fff;font:400 13px "Noto Sans",sans-serif;-webkit-user-select:text;user-select:text}
+.row.city input::placeholder{color:rgba(255,255,255,.35)}
+.row.city input:focus{box-shadow:inset 0 0 0 1px #ff2b3a,0 0 10px rgba(255,43,58,.5)}
+.wx-cta:empty{display:none}
+.wx-cta{display:flex;gap:8px;margin-top:12px}
+.wx-cta button,.cal-cta button,.nl-perm button{height:32px;padding:0 12px;font:700 9.5px "Noto Sans Mono";letter-spacing:.12em;text-transform:uppercase;color:#fff;background:#ff2b3a;box-shadow:0 0 12px rgba(255,43,58,.55);clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}
+.wx-cta button+button{background:none;color:#ff4652;box-shadow:inset 0 0 0 1px rgba(255,43,58,.6)}
+.t09 .cal-e li.cal-cta{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.t09 .cal-e li.cal-cta span{font:400 12.5px/1.4 "Noto Sans";color:rgba(255,255,255,.75)}
+.t09 .cal-e li b{width:auto;min-width:46px}
+.cal-e li[data-act]{cursor:pointer}
+.nl-perm{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:12px;background:rgba(17,19,29,.85);box-shadow:inset 0 0 0 1px rgba(255,43,58,.3)}
+.nl-perm span{font:400 12.5px/1.45 "Noto Sans";color:rgba(255,255,255,.8)}
+.hello-p{margin:0 0 12px;font:400 13px/1.5 "Noto Sans";color:rgba(255,255,255,.75)}
+.scr.o-hello .scrim{opacity:1;pointer-events:auto}
+.scr.o-hello .s-hello{transform:none}
+.t09 .sy-g b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t09 .ntf-ic img.ni,.t09 .qa-hd img.ni,.t09 .nl-i img.ni,.t09 .sa-hd img.ni{width:60%;height:60%}
+/*FIX_TST*/.scr.o-add .tst,.scr.o-set .tst,.scr.o-sa .tst,.scr.o-shade .tst,.scr.o-vault .tst,.scr.o-hello .tst{bottom:auto;top:calc(var(--sat,26px) + 22px)}.t09 .tst{z-index:96}.t09 .sht{background-color:#090a10}
+
+/* ═══════ p4: обложка загрузки, шторки HyperOS, быстрые настройки, уровни эффектов ═══════ */
+/* обложка ставится, когда гаснет экран: после разблокировки сразу видна загрузка, рабочий стол не мигает */
+.boot.arm{visibility:visible;opacity:1}
+.scr.locked .boot.arm{z-index:79}
+html.native .torch{display:none}
+
+/* ── шторки: общая раскладка ── */
+.hs{position:absolute;inset:0;z-index:67;visibility:hidden;pointer-events:none;contain:layout style;--ha:#3482ff;color:#fff}
+.scr.o-ns .hs,.scr.o-cc .hs,.hs.drag{visibility:visible}
+.scr.o-ns .hs,.scr.o-cc .hs{pointer-events:auto}
+.hs-bg{position:absolute;inset:0;overflow:hidden;opacity:0;background:rgba(8,10,16,.4);transition:opacity .42s var(--ease);font-style:normal}
+.hs-wp{position:absolute;inset:-46px;background-size:cover;background-position:center;filter:blur(24px) brightness(.6) saturate(1.15);font-style:normal}
+.scr.o-ns .hs-bg,.scr.o-cc .hs-bg{opacity:1}
+.hs-p{position:absolute;inset:0;display:flex;flex-direction:column;padding:calc(var(--sat,28px) + 16px) 16px calc(var(--sab,12px) + 28px);opacity:0;visibility:hidden;transform:translateY(-38px) scale(.97);transform-origin:50% 0;transition:transform .5s var(--ease),opacity .3s,visibility 0s .5s}
+.scr.o-ns .hs-n,.scr.o-cc .hs-c{opacity:1;visibility:visible;transform:none;transition:transform .5s var(--ease),opacity .3s}
+.hs.drag .hs-bg{opacity:var(--k,0);transition:none}
+.hs.drag.dn .hs-n,.hs.drag.dc .hs-c{visibility:visible;opacity:calc(var(--k,0)*1.5 - .25);transform:translateY(calc((1 - var(--k,0))*-52px)) scale(calc(.955 + var(--k,0)*.045));transition:none}
+@keyframes hsL{from{opacity:0;transform:translateX(-48px)}}
+@keyframes hsR{from{opacity:0;transform:translateX(48px)}}
+.scr.hs-l .hs-n{animation:hsL .4s var(--ease) both}
+.scr.hs-r .hs-c{animation:hsR .4s var(--ease) both}
+.scr.o-ns .tst,.scr.o-cc .tst,.scr.o-quick .tst{bottom:auto;top:calc(var(--sat,26px) + 22px)}
+
+.hs-hd{flex:none;display:flex;align-items:flex-end;gap:12px;padding:0 4px 16px}
+.hs-tm{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.hs-tm b{font:300 54px/1 "Noto Sans",sans-serif;letter-spacing:-.01em}
+.hs-tm small{font:400 13px "Noto Sans",sans-serif;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hs-b{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.15);color:#fff;transition:transform .15s,background .2s}
+.hs-b svg{width:20px;height:20px}
+.hs-b:active{transform:scale(.9);background:rgba(255,255,255,.25)}
+.hs-ht{position:absolute;left:0;right:0;bottom:calc(var(--sab,10px) + 6px);text-align:center;font:400 10px "Noto Sans",sans-serif;font-style:normal;color:rgba(255,255,255,.34);pointer-events:none}
+
+/* уведомления */
+.hs-nl{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:8px;padding:2px 0 16px;scrollbar-width:none;-webkit-mask-image:linear-gradient(#000 calc(100% - 26px),transparent);mask-image:linear-gradient(#000 calc(100% - 26px),transparent)}
+.hs-nl::-webkit-scrollbar{display:none}
+.hs-i{flex:none;display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-radius:20px;background:rgba(255,255,255,.13);cursor:pointer;touch-action:pan-y;transition:translate .25s var(--ease),opacity .25s,background .2s}
+.hs-i:active{background:rgba(255,255,255,.2)}
+.hs-ii{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(0,0,0,.34);color:#fff}
+.hs-ii .mi{width:20px;height:20px}
+.hs-ii img.ni{width:72%;height:72%}
+.hs-it{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.hs-it em{display:flex;justify-content:space-between;gap:8px;font:400 11px "Noto Sans",sans-serif;font-style:normal;color:rgba(255,255,255,.6)}
+.hs-it em span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hs-it em i{flex:none;font-style:normal}
+.hs-it b{font:600 14px/1.3 "Noto Sans",sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hs-it>span{font:400 13px/1.38 "Noto Sans",sans-serif;color:rgba(255,255,255,.86);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hs-e{margin:auto;display:flex;flex-direction:column;align-items:center;gap:12px;font:400 13px "Noto Sans",sans-serif;color:rgba(255,255,255,.55)}
+.hs-e svg{width:30px;height:30px;opacity:.6}
+.hs-perm{margin:auto 0;padding:20px;border-radius:22px;background:rgba(255,255,255,.13);display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.hs-perm b{font:600 15px "Noto Sans",sans-serif}
+.hs-perm span{font:400 13px/1.45 "Noto Sans",sans-serif;color:rgba(255,255,255,.8)}
+.hs-perm button{margin-top:8px;height:38px;padding:0 20px;border-radius:19px;background:var(--ha);color:#fff;font:600 13px "Noto Sans",sans-serif}
+.hs-x{flex:none;align-self:center;width:48px;height:48px;margin-top:8px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);color:#fff;transition:transform .15s}
+.hs-x svg{width:20px;height:20px}
+.hs-x:active{transform:scale(.9)}
+
+/* пункт управления */
+.hs-big{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hb{height:72px;padding:0 16px;border-radius:22px;display:flex;align-items:center;gap:12px;text-align:left;background:rgba(255,255,255,.14);color:#fff;transition:background .25s,transform .15s,box-shadow .25s}
+.hb svg{flex:none;width:24px;height:24px}
+.hb span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.hb b{font:600 13.5px/1.2 "Noto Sans",sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb small{font:400 11px "Noto Sans",sans-serif;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb.on{background:var(--ha)}
+.hb.on small{color:rgba(255,255,255,.88)}
+.hb:active{transform:scale(.96)}
+.hs-mid{flex:none;display:grid;grid-template-columns:minmax(0,1fr) 72px 72px;gap:12px;height:164px;margin-top:12px}
+.hs-mu{min-width:0;padding:16px;border-radius:22px;background:rgba(255,255,255,.14);display:flex;flex-direction:column;justify-content:space-between}
+.hs-mt{display:flex;flex-direction:column;gap:8px;min-width:0;cursor:pointer}
+.hs-ma{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(0,0,0,.34);font-style:normal;color:#fff}
+.hs-ma .mi{width:22px;height:22px}
+.hs-mt span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.hs-mt b{font:600 14px/1.25 "Noto Sans",sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hs-mt small{font:400 11.5px "Noto Sans",sans-serif;color:rgba(255,255,255,.65);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hs-mc{display:flex;align-items:center;justify-content:space-between}
+.hs-mc button{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;transition:transform .15s}
+.hs-mc button svg{width:20px;height:20px}
+.hs-mc button:nth-child(2){width:44px;height:44px;background:rgba(255,255,255,.2)}
+.hs-mc button:active{transform:scale(.88)}
+.vs{position:relative;border-radius:22px;overflow:hidden;background:rgba(255,255,255,.14);touch-action:none;cursor:ns-resize;transition:transform .2s var(--ease)}
+.vs.drag{transform:scale(1.04)}
+.vs-f{position:absolute;inset:0;background:#fff;transform-origin:50% 100%;transform:scaleY(.5);transition:transform .14s linear;font-style:normal}
+.vs.drag .vs-f{transition:none}
+.vs-i{position:absolute;left:0;right:0;bottom:14px;display:grid;place-items:center;color:#7a808b;font-style:normal;transition:color .2s}
+.vs-i svg{width:24px;height:24px}
+.vs.lo .vs-i{color:#fff}
+.hs-tg{flex:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 8px;margin-top:20px}
+.hq{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0;color:#fff}
+.hq i{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.14);font-style:normal;transition:background .25s,transform .15s,box-shadow .25s}
+.hq i svg{width:23px;height:23px}
+.hq span{max-width:100%;font:400 11px/1.2 "Noto Sans",sans-serif;color:rgba(255,255,255,.86);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hq.on i{background:var(--ha)}
+.hq:active i{transform:scale(.9)}
+
+/* вариант «Стрелиция»: та же раскладка, неон 09 */
+.sh-strel .hs{--ha:#ff2b3a}
+.sh-strel .hs-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,43,58,.05) 1px,transparent 1px) 0 0/24px 24px,rgba(4,5,9,.5)}
+.sh-strel .hs-tm b{font:700 60px/.9 "Nimbus Sans Narrow",sans-serif;letter-spacing:0;color:rgba(255,43,58,.1);-webkit-text-stroke:1.2px #ff4652;filter:drop-shadow(0 0 6px rgba(255,43,58,.75))}
+.sh-strel .hs-tm small{font:700 10px "Noto Sans Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:#ff4652}
+.sh-strel .hs-b,.sh-strel .hs-x{border-radius:0;background:rgba(14,15,24,.9);color:#ff4652;box-shadow:inset 0 0 0 1px rgba(255,43,58,.55);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}
+.sh-strel .hs-i,.sh-strel .hb,.sh-strel .hs-mu,.sh-strel .vs,.sh-strel .hs-perm{border-radius:0;background:rgba(13,14,22,.9);box-shadow:inset 0 0 0 1px rgba(255,43,58,.34);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.sh-strel .hs-ii,.sh-strel .hs-ma{border-radius:0;background:rgba(255,43,58,.08);box-shadow:inset 0 0 0 1px rgba(255,43,58,.45);color:#ff4652}
+.sh-strel .hs-it em span{font:700 9.5px "Noto Sans Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:#ff4652}
+.sh-strel .hs-it em i,.sh-strel .hb small,.sh-strel .hs-mt small,.sh-strel .hq span{font-family:"Noto Sans Mono",monospace;letter-spacing:.02em}
+.sh-strel .hb{color:#ff4652}
+.sh-strel .hb b{color:#fff;font-family:"Noto Sans Mono",monospace;font-size:12px;letter-spacing:.02em}
+.sh-strel .hb.on{background:#ff2b3a;color:#fff;box-shadow:0 0 16px rgba(255,43,58,.6)}
+.sh-strel .hs-mc button{color:#ff4652}
+.sh-strel .hs-mc button:nth-child(2){border-radius:0;background:#ff2b3a;color:#fff;box-shadow:0 0 12px rgba(255,43,58,.6)}
+.sh-strel .vs-f{background:linear-gradient(#ff4652,#c8101e);box-shadow:0 0 14px #ff2b3a}
+.sh-strel .vs-i,.sh-strel .vs.lo .vs-i{color:#fff}
+.sh-strel .hq i{border-radius:0;background:rgba(13,14,22,.9);color:#ff4652;box-shadow:inset 0 0 0 1px rgba(255,43,58,.42);clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)}
+.sh-strel .hq.on i{background:#ff2b3a;color:#fff;box-shadow:0 0 14px rgba(255,43,58,.7)}
+.sh-strel .hs-perm button{border-radius:0;clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px)}
+
+/* ── быстрые настройки по удержанию ── */
+.scr.o-quick .scrim{opacity:1;pointer-events:auto}
+.scr.o-quick .s-quick{transform:none}
+.s-quick{z-index:31}
+.t09 .qk-h{margin:20px 0 8px;font:700 9.5px "Noto Sans Mono";letter-spacing:.18em;color:var(--ac);text-transform:uppercase;text-shadow:0 0 6px rgba(255,43,58,.7)}
+.t09 .qk-h:first-child{margin-top:0}
+.qk-sh,.qk-fx,.qk-tg,.qk-ln{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.t09 .qk-c,.t09 .qk-f,.t09 .qt,.t09 .qk-ln button{background:rgba(17,19,29,.86);box-shadow:inset 0 0 0 1px rgba(255,43,58,.28);clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:background .25s,box-shadow .25s,transform .15s}
+.qk-c,.qk-f{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 4px 8px;text-align:center}
+.t09 .qk-c b,.t09 .qk-f b{font:700 10.5px "Noto Sans Mono";letter-spacing:.03em;color:#fff}
+.t09 .qk-c small,.t09 .qk-f small{font:400 8.5px "Noto Sans Mono";color:rgba(255,255,255,.5)}
+.t09 .qk-c.on,.t09 .qk-f.on{background:rgba(255,43,58,.14);box-shadow:inset 0 0 0 1.5px #ff2b3a,0 0 14px rgba(255,43,58,.45)}
+.t09 .qk-c.on b,.t09 .qk-f.on b{color:#ff4652;text-shadow:0 0 6px rgba(255,43,58,.6)}
+.qk-c:active,.qk-f:active,.qt:active,.qk-ln button:active{transform:scale(.96)}
+.t09 .qk-n{margin:8px 2px 0;font:400 11px/1.45 "Noto Sans";color:rgba(255,255,255,.62)}
+/* мини-превью шторок */
+.shm{position:relative;width:46px;height:82px;margin-bottom:4px;border-radius:7px;overflow:hidden;background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);font-style:normal}
+.shm::before{content:"";position:absolute;left:0;right:0;top:0;height:74%;background:rgba(14,18,30,.78)}
+.shm i{position:absolute;font-style:normal}
+.shm-hyper .a,.shm-hyper .b{top:9px;width:17px;height:8px;border-radius:3px;background:#3482ff}
+.shm-hyper .a{left:5px}.shm-hyper .b{right:5px;background:rgba(255,255,255,.32)}
+.shm-hyper .c{left:5px;top:21px;width:19px;height:18px;border-radius:4px;background:rgba(255,255,255,.3)}
+.shm-hyper .d{left:27px;top:21px;width:6px;height:18px;border-radius:3px;background:linear-gradient(transparent 45%,#fff 45%)}
+.shm-hyper .e{left:35px;top:21px;width:6px;height:18px;border-radius:3px;background:linear-gradient(transparent 30%,#fff 30%)}
+.shm-hyper::after{content:"";position:absolute;left:6px;top:45px;width:5px;height:5px;border-radius:50%;background:#3482ff;box-shadow:9px 0 0 rgba(255,255,255,.35),18px 0 0 #3482ff,27px 0 0 rgba(255,255,255,.35)}
+.shm-strel::before{background:linear-gradient(rgba(255,43,58,.14) 1px,transparent 1px) 0 0/6px 6px,rgba(8,9,15,.84);box-shadow:inset 0 -1px 0 #ff2b3a}
+.shm-strel .a,.shm-strel .b{top:9px;width:17px;height:8px;clip-path:polygon(2px 0,100% 0,100% calc(100% - 2px),calc(100% - 2px) 100%,0 100%,0 2px)}
+.shm-strel .a{left:5px;background:#ff2b3a;box-shadow:0 0 6px #ff2b3a}.shm-strel .b{right:5px;background:rgba(255,43,58,.28)}
+.shm-strel .c{left:5px;top:21px;width:19px;height:18px;background:rgba(255,43,58,.2);box-shadow:inset 0 0 0 1px rgba(255,43,58,.6)}
+.shm-strel .d{left:27px;top:21px;width:6px;height:18px;background:linear-gradient(rgba(255,43,58,.18) 45%,#ff2b3a 45%)}
+.shm-strel .e{left:35px;top:21px;width:6px;height:18px;background:linear-gradient(rgba(255,43,58,.18) 30%,#ff2b3a 30%)}
+.shm-strel::after{content:"";position:absolute;left:6px;top:45px;width:5px;height:5px;background:#ff2b3a;box-shadow:9px 0 0 rgba(255,43,58,.35),18px 0 0 #ff2b3a,27px 0 0 rgba(255,43,58,.35)}
+.shm-one::before{height:60%;background:rgba(8,9,15,.9);box-shadow:inset 0 -1px 0 #ff2b3a}
+.shm-one .a,.shm-one .b,.shm-one .c,.shm-one .d{width:17px;height:6px;background:rgba(255,43,58,.35)}
+.shm-one .a{left:5px;top:10px;background:#ff2b3a}.shm-one .b{right:5px;top:10px}.shm-one .c{left:5px;top:19px}.shm-one .d{right:5px;top:19px}
+.shm-one .e{left:5px;right:5px;top:30px;height:2px;background:#ff2b3a;box-shadow:0 6px 0 rgba(255,255,255,.3),0 11px 0 rgba(255,255,255,.3),0 16px 0 rgba(255,255,255,.3)}
+/* мини-превью эффектов: живые искры, сколько их и как быстро летят */
+.fxm{position:relative;width:54px;height:34px;margin-bottom:4px;overflow:hidden;background:radial-gradient(60% 80% at 50% 120%,rgba(255,60,40,.45),transparent 70%),#08090f;box-shadow:inset 0 0 0 1px rgba(255,43,58,.25);font-style:normal}
+.fxm i{position:absolute;bottom:-4px;width:3px;height:3px;border-radius:50%;background:#ffd2c0;box-shadow:0 0 4px 1px #ff4a3a;opacity:0;font-style:normal}
+.fxm i:nth-child(1){left:8px}.fxm i:nth-child(2){left:17px}.fxm i:nth-child(3){left:25px}.fxm i:nth-child(4){left:33px}.fxm i:nth-child(5){left:41px}.fxm i:nth-child(6){left:47px}
+@keyframes fxUp{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(-34px)}}
+.scr.o-quick .fxm-max i{animation:fxUp 1.1s linear infinite}
+.scr.o-quick .fxm-bal i{animation:fxUp 1.7s steps(12) infinite}
+.scr.o-quick .fxm-bal i:nth-child(n+5){display:none}
+.fxm-eco i{display:none}
+.fxm-eco::after{content:"";position:absolute;left:10px;right:10px;top:16px;height:1px;background:rgba(255,255,255,.18)}
+.fxm i:nth-child(2){animation-delay:-.4s!important}.fxm i:nth-child(3){animation-delay:-.8s!important}.fxm i:nth-child(4){animation-delay:-.2s!important}.fxm i:nth-child(5){animation-delay:-.6s!important}.fxm i:nth-child(6){animation-delay:-1s!important}
+/* плитки-переключатели */
+.qt{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:64px;padding:12px;text-align:left}
+.t09 .qt{color:#ff4652}
+.qt svg{width:19px;height:19px}
+.t09 .qt span{display:flex;flex-direction:column;gap:2px;font:700 10px "Noto Sans Mono";letter-spacing:.03em;color:#fff}
+.t09 .qt small{font:400 8.5px "Noto Sans Mono";color:rgba(255,255,255,.5)}
+.t09 .qt.on{background:#ff2b3a;color:#fff;box-shadow:0 0 14px rgba(255,43,58,.55)}
+.t09 .qt.on small{color:rgba(255,255,255,.88)}
+.qk-ln{margin-top:12px}
+.qk-ln button{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 4px}
+.t09 .qk-ln button{color:#ff4652}
+.qk-ln svg{width:18px;height:18px}
+.t09 .qk-ln span{font:700 9.5px "Noto Sans Mono";letter-spacing:.05em;color:#fff}
+.s-quick .row{min-height:44px}
+
+/* ── уровни эффектов: «Баланс» убирает размытие над искрами, «Эко» убирает всё тяжёлое ── */
+.t09.fx-bal .ntf,.t09.fx-bal .mp,.t09.fx-eco .ntf,.t09.fx-eco .mp,.t09.fx-eco .drw-bg,.t09.fx-eco .vault::before,.t09.fx-eco .shade{-webkit-backdrop-filter:none;backdrop-filter:none}
+.t09.fx-bal .mp,.t09.fx-eco .mp{background:rgba(9,10,16,.94)}
+.t09.fx-bal .ntf,.t09.fx-eco .ntf{background:rgba(9,10,16,.97)}
+.t09.fx-eco .drw-bg{background-color:rgba(7,8,14,.97)}
+.t09.fx-eco .vault::before{background-color:rgba(7,8,14,.96)}
+.t09.fx-eco .hs-wp{display:none}
+.t09.fx-eco .hs-bg{background:rgba(9,11,17,.96)}
+.t09.fx-bal .sync svg rect,.t09.fx-bal.mp-play .mp-i{animation-timing-function:steps(5)}
+.t09.fx-eco .sync svg rect,.t09.fx-eco.mp-play .mp-i,.t09.fx-eco .rail .app.unread::after{animation-play-state:paused}
+.drw,.vault,.sht,.shade{contain:layout style}
+/* скриншот в браузерной версии: вспышка */
+@keyframes shotF{from{opacity:.85}to{opacity:0}}
+.scr.shot .dim{background:#fff;animation:shotF .7s ease-out both}
+
+/* ═══════ p5: шторки без мигания, свайп между шторками ═══════ */
+/* горизонтальный свайп по списку уведомлений браузер не забирает себе: он нужен лаунчеру */
+.hs-nl,.hs-p{touch-action:pan-y}
+.hs .nl-i.out,.nl-ls .nl-i.out{pointer-events:none}
+/* лесенка появления только при открытии тапом: если шторку тянули пальцем, карточки уже на экране */
+.hs.st-n .hs-i{animation:fadeUp .42s var(--ease) both;animation-delay:calc(var(--i,0)*34ms + 70ms)}
+.hs.st-c .hb,.hs.st-c .hs-mid>*,.hs.st-c .hq{animation:fadeUp .42s var(--ease) both}
+.hs.st-c .hb+.hb{animation-delay:40ms}
+.hs.st-c .hs-mid>*{animation-delay:70ms}
+.hs.st-c .hq{animation-delay:calc(var(--i,0)*22ms + 100ms)}
+/* новое уведомление при открытой шторке мягко въезжает сверху */
+@keyframes hsNw{from{opacity:0;transform:translateY(-14px) scale(.97)}}
+.hs-i.nw{animation:hsNw .4s var(--ease) both}
+@keyframes hsFd{from{opacity:0}}
+.hs-e,.nl-e{animation:hsFd .35s ease both}
+.hs-x{transition:transform .15s,opacity .25s}
+.hs-x.off{opacity:0;pointer-events:none;transform:scale(.85)}
+/* свайп между шторками: обе панели едут за пальцем */
+.hs.sw .hs-p{transition:none;animation:none}
+.hs.sw .hs-i,.hs.sw .hb,.hs.sw .hs-mid>*,.hs.sw .hq{animation:none}
+.hs.sw.rel .hs-p{transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.hs.sw.to-c .hs-n,.hs.sw.to-n .hs-c{visibility:visible;opacity:1;transform:translateX(var(--sx,0px))}
+.hs.sw.to-c .hs-c{visibility:visible;opacity:1;transform:translateX(calc(100% + var(--sx,0px)))}
+.hs.sw.to-n .hs-n{visibility:visible;opacity:1;transform:translateX(calc(-100% + var(--sx,0px)))}
+.hs.nt .hs-p{transition:none!important;animation:none!important}
+
+/* ═══════ 1.3 · шлифовка: сетка 4 px, кнопки, зоны нажатия ═══════ */
+:root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px}
+/* плитки «Часто меняют»: внутренний отступ и спокойное включённое состояние вместо сплошной красной заливки */
+.qt{padding:var(--s3);gap:var(--s2)}
+.t09 .qt.on{background:rgba(255,43,58,.16);color:#ff4652;box-shadow:inset 0 0 0 1px #ff2b3a}
+.t09 .qt.on small{color:#ff8a92}
+.qk-c,.qk-f{padding:var(--s3) var(--s1)}
+.qk-ln button{padding:var(--s3) var(--s1)}
+/* пункт управления: подписи круглых кнопок в две строки вместо обрезки */
+.hq span{white-space:normal;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.2}
+.hb{padding:0 var(--s3);gap:var(--s2)}
+/* рабочий стол: зона нажатия у маленьких кнопок панели */
+.rail .add::after,.rail .all::after{content:'';position:absolute;inset:-12px}
+/* мини-плеер: кнопки не вплотную, название не сжато */
+/* кнопки управления это ряд иконок: зазор дают их собственные зоны нажатия, красной остаётся только пауза */
+.t09 .mp{gap:0;padding:0 var(--s1) 0 var(--s2)}
+.t09 .mp-t{padding:0 var(--s2)}
+.mpb{width:30px;height:40px}
+.t09 .mpb{color:rgba(255,255,255,.86)}
+.mpb.pl{width:36px;height:36px}
+.t09 .mp .mpb.pl{color:#fff}
+.t09 .mp .mpb.x{width:24px;background:none;color:rgba(255,255,255,.5)}
+/* две большие плитки пункта управления одинаковой ширины */
+.hs-big{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* чипы категорий, переключатели-плашки, шестерёнка */
+.t09 .chip{height:32px;line-height:32px}
+.seg{height:36px}
+.t09 .seg button{line-height:36px}
+.t09 .drw-tt .gear{width:44px;height:44px;right:var(--s2);top:var(--s2)}
+/* календарь: строки событий выше, по ним легче попасть */
+[data-act=cal-ev]{padding-top:var(--s2);padding-bottom:var(--s2)}
+/* подпись большой плитки: помещается целиком, а если длиннее, переносится на вторую строку вместо многоточия */
+.hb b{font-size:13px;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:clip}
+
+/* ═══════ 1.4 · настройки, плитки, редактор ═══════ */
+/* быстрые настройки: две шторки, четыре ссылки внизу, без подзаголовка */
+.qk-sh{grid-template-columns:repeat(2,minmax(0,1fr))}
+.qk-ln{grid-template-columns:repeat(4,minmax(0,1fr))}
+.qk-ln button span{font-size:11px;line-height:1.2}
+.s-quick .row>span{font-size:14px}
+/* пункт управления: сетка плиток листается, если плиток больше, чем помещается */
+.hs-tg{flex:0 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:none;padding-bottom:var(--s2);align-content:start}
+.hs-tg::-webkit-scrollbar{display:none}
+/* классическая шторка: плитки из того же набора */
+.shade .qs .q small:empty{display:none}
+/* иконка плитки внутри загрузки */
+.lx-tl{display:grid;place-items:center;width:100%;height:100%;color:#ff4652}
+.lx-tl svg{width:56%;height:56%}
+/* редактор плиток */
+.s-tiles{z-index:31}
+.scr.o-tiles .s-tiles{transform:none}
+.scr.o-tiles .scrim{opacity:1;pointer-events:auto}
+.te-n{margin:calc(var(--s2) * -1) 0 var(--s3);font:400 12px/1.4 "Noto Sans",sans-serif;color:rgba(255,255,255,.5)}
+.te-g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s4) var(--s2);padding:var(--s1) 0 var(--s3)}
+.te{position:relative;padding:var(--s1) 0;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.te span{text-align:center;font-family:"Noto Sans",sans-serif;letter-spacing:0}
+.te-b{position:absolute;top:-2px;right:calc(50% - 38px);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#ff2b3a;color:#fff;box-shadow:0 0 0 2px #090a10;z-index:2}
+.te-b::after{content:'';position:absolute;inset:-6px}
+.te-b svg{width:14px;height:14px}
+.te-off .te-b{background:rgba(255,255,255,.2)}
+.te-off .te i{opacity:.75}
+.te.ph{opacity:.25}
+.te-gh{position:absolute;z-index:60;pointer-events:none;margin:0;transform:scale(1.08);filter:drop-shadow(0 8px 18px rgba(0,0,0,.6))}
+.te-e{grid-column:1/-1;margin:0;padding:var(--s3) 0;font:400 12px/1.4 "Noto Sans",sans-serif;color:rgba(255,255,255,.5);text-align:center}
+.te-bt{flex:none;display:grid;grid-template-columns:1fr 2fr;gap:var(--s2);margin-top:var(--s4)}
+.te-bt .btn{margin-top:0}
+.te-rs{height:46px;padding:0 var(--s3);color:rgba(255,255,255,.72);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);font:700 11px/46px "Noto Sans Mono",monospace;letter-spacing:.16em;text-transform:uppercase}
+.t09 .te-rs{clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.te-rs:active{transform:scale(.97)}
+
+.wp09{background-image:url(wp/wp09.jpg)}

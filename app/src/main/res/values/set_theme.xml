@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="set_bg">#FFF7F7F7</color>
+    <style name="Theme.StreliziaSet" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/set_bg</item>
+        <item name="android:statusBarColor">@color/set_bg</item>
+        <item name="android:navigationBarColor">@color/set_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
